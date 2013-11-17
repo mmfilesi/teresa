@@ -152,9 +152,9 @@ class Admin extends CI_Controller {
 			$albumGoogle 			= addslashes( strip_tags($this->input->post('albumGoogle') ) );
 			$albumDescripcion 		= addslashes( $this->input->post('albumDescripcion') );
 			$albumCategorias		= $this->input->post('albumCategorias');
-			$albumTags 			= addslashes( strip_tags($this->input->post('albumTags') ) );
-			$listadoTags 		= $this->input->post('inputTags');
-			$imagenDestacadaSubida = addslashes( strip_tags($this->input->post('imagenDestacadaSubida') ) );
+			$albumTags 				= addslashes( strip_tags($this->input->post('albumTags') ) );
+			$listadoTags 			= $this->input->post('inputTags');
+			$imagenDestacadaSubida 	= addslashes( strip_tags($this->input->post('imagenDestacadaSubida') ) );
 
 			if ( $albumNombre == "" ) {
 				$albumNombre = "Sin título";
@@ -231,6 +231,36 @@ class Admin extends CI_Controller {
 		} // #if (isset($_POST) && $_POST)
 
 	} //#updateAlbum
+
+	public function deleteAlbum() {
+
+		if (isset($_POST) && $_POST) {
+
+			$idAlbum = addslashes( strip_tags($this->input->post('id') ) );
+			$checkAlbum = $this->modImagenes->getAlbum($idAlbum);
+
+			if ( is_numeric($idAlbum) AND !empty($checkAlbum) ) {
+				
+				$this->modImagenes->deleteAlbum($idAlbum);
+
+				$ruta = './images/albums/'.$idAlbum;
+
+				if ( is_dir($ruta) ) {
+					$this->load->helper("file");
+					delete_files($ruta, true);
+					rmdir($ruta);
+				}				
+
+			} 
+
+		}
+		
+	} //#deleteAlbum
+
+/*================================================================
+	Categorías
+=================================================================*/
+
 
 	public function insertCategoria() {
 		

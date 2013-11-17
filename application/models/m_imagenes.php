@@ -65,6 +65,35 @@ class M_imagenes extends CI_Model {
 
 	} //#updateAlbum
 
+	public function deleteAlbum($idAlbum) {
+		
+		$this->db->where('id', $idAlbum);
+		$this->db->delete('ter_albums');
+
+	}
+
+	public function deleteAlbumCategorias($idAlbum) {
+		
+		$this->db->where('id_album', $idAlbum);
+		$this->db->delete('ter_categorias_on_albums');
+
+	}
+
+	public function deleteAlbumTags($idAlbum) {
+		
+		$this->db->where('id_album', $idAlbum);
+		$this->db->delete('ter_tags_on_albums');
+
+	}
+
+	public function deleteAlbumImagenes($idAlbum) {
+		
+		$this->db->where('id_album', $idAlbum);
+		$this->db->delete('ter_imagenes_on_albums');
+
+	}
+			
+
 /*================================================================
 	Categorías
 =================================================================*/

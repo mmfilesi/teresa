@@ -43,7 +43,7 @@
 <!-- Dialogs -->
 <div id="dialog-borrar" class="dialogos" title="Borrar álbum" style="display:none;s">
 	Atención, esta acción es irreversible. Se borrará el álbum <span id="js-nombreAlbum" class="negrita"></span>,
-	así como todas sus imágenes asociadas.
+	aunque <span class="negrita">no</span> se borrarán sus imágenes asociadas.
 </div>
 
 </div> <!-- #layoutContainer -->
