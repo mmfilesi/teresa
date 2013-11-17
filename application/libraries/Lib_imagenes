@@ -1,0 +1,51 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+
+class Lib_imagenes {
+  	
+  	public function __construct() {		
+        $this->instance =& get_instance();        
+        $this->instance->load->model( 'm_imagenes', 'modImagenes' );
+
+  	} 
+
+
+
+
+}
+
+/* Esta función puede servir para subir cualquier tipo de imagen */
+	
+	private function uploadImagenes($rutaBase, $nombreImagen, $nombreInput) {
+
+		if (!is_dir($rutaBase)) {
+			mkdir($rutaBase, 0777, true);
+			$directorioCreado = 1;
+		} else {
+			$directorioCreado = 0;
+		}
+
+		$this->load->library('upload');
+
+		$config =  array(
+						'upload_path'	     	=> $rutaBase,
+						'file_name'				=> $nombreImagen, 
+						'allowed_types'   		=> "gif|jpg|png",
+						'overwrite'       		=> TRUE,
+						'max_size'        		=> "1000KB",
+						'max_height'      		=> "1768",
+						'max_width'       		=> "2024" 
+						);
+
+		$this->upload->initialize($config);   
+
+		if( $this->upload->do_upload($nombreInput) ) {
+			$envio = 1;						
+		} else {
+			$envio = 0;
+		}
+
+		return $envio;
+
+	}
+
+}

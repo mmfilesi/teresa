@@ -1,0 +1,93 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+
+class L_imagenes {
+  	
+  	public function __construct() {
+
+        $this->instance =& get_instance();        
+        $this->instance->load->model( 'm_imagenes', 'modImagenes' );        
+  
+  	} 
+
+
+/* Esta función puede servir para subir cualquier tipo de imagen */
+	
+	public function uploadImagenes($rutaBase, $nombreImagen, $nombreInput) {
+
+		if (!is_dir($rutaBase)) {
+			mkdir($rutaBase, 0777, true);
+			$directorioCreado = 1;
+		} else {
+			$directorioCreado = 0;
+		}
+
+		$CI =& get_instance();
+
+		$CI->load->library('upload');
+
+		$config =  array(
+						'upload_path'	     	=> $rutaBase,
+						'file_name'				=> $nombreImagen, 
+						'allowed_types'   		=> "gif|jpg|png",
+						'overwrite'       		=> TRUE,
+						'max_size'        		=> "1000KB",
+						'max_height'      		=> "1768",
+						'max_width'       		=> "2024" 
+						);
+
+		$CI->upload->initialize($config);   
+
+		if( $CI->upload->do_upload($nombreInput) ) {
+			$envio = 1;						
+		} else {
+			$envio = 0;
+		}
+
+		return $envio;
+
+	}
+
+	/* Recibe una cadena en fecha española y devuelve el formato inglés */
+
+	public function dateSpToUk($fecha) {
+
+		$fecha = explode("-", $fecha);
+		$fecha = $fecha[2]."-".$fecha[1]."-".$fecha[0];
+		return $fecha; 
+	}
+
+	/* Recibe una cadena en fecha inglesa y la devuelve en formato español */
+
+	public function dateUkToSp($fecha) {
+		
+		$fecha = explode("-", $fecha);
+		$fecha = $fecha[2]."-".$fecha[1]."-".$fecha[0];
+		return $fecha; 
+	} 
+
+	/* Inserta un listado de etiquetas y los asocia con un álbum. 
+		Pendiente: optimizar este proceso para no lanzar tantas queries */
+
+	public function insertTagsAlbum($idAlbum, $arrayTags) {
+
+		if ( count($arrayTags) > 0 ) {
+
+				foreach ( $arrayTags as $clave ) {
+					// Comprobamos si existe
+					$idTag = $this->instance->modImagenes->getTagByValue($clave);
+
+					// Si no existe, insertamos
+					if ( empty($idTag) ) {
+						$idTag = $this->instance->modImagenes->insertTag($clave);
+					} else {
+						$idTag = $idTag['id'];
+					}
+
+					// Y ya vamos con el álbum
+					$this->instance->modImagenes->insertTagToAlbum($idAlbum, $idTag);
+				} 
+		}
+	} 
+
+
+}
