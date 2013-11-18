@@ -27,7 +27,7 @@ class Admin extends CI_Controller {
 	Albums
 ============================================================ */
 
-		public function albums() {
+	public function albums() {
 
 		$sidebar['selected'] 	= "albums";
 		$data['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
