@@ -30,14 +30,17 @@ class Admin extends CI_Controller {
 	public function albums() {
 
 		$sidebar['selected'] 	= "albums";
-		$data['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
+		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
 
-		$data['titular'] 		= "Albums";
+		$header['titular'] 		= "Albums";
 		$data['todoAlbums']		= $this->modImagenes->getAlbums();
 
-		$this->load->view('backend/common/header', $data);
+		$footer['tiempo'] 		= $this->benchmark->elapsed_time();
+		$footer['memoria'] 		= $this->benchmark->memory_usage();
+		
+		$this->load->view('backend/common/header', $header);
 		$this->load->view('backend/albums', $data);
-		$this->load->view('backend/common/footer');
+		$this->load->view('backend/common/footer', $footer);
 		
 	}
 

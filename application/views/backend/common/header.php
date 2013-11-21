@@ -29,15 +29,16 @@
         <div id="topBar">
             <div class="floatRight enlaceBlanco marginRight_01"> desconectar </div>
         </div>
-        <section id="main" class="bordeGris">
 
-            <div class="layoutContainer">
+        <section id="main" class="bordeGris layoutContainer">
 
-            <?= $sidebar; ?>
+                <?= $sidebar; ?>
 
-            <article id="developArea">
+                <article id="developArea" class="inlineBlock">
                 
-                <nav id="breadCrumb" class="bordeGrisBottom bordeGrisTop fuente08 padding-02">Albums <span class="">></span>Tal</nav>
+                    <nav id="breadCrumb" class="bordeGrisBottom bordeGrisTop fuente08 padding-02">Albums <span class="">></span>Tal</nav>
 
-                <h3 class="azul_0777eb"><?= $titular; ?></h3>
+                    <h3 class="azul_0777eb"><?= $titular; ?></h3>
             
+
+

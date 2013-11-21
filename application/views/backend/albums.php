@@ -30,7 +30,7 @@
 
 	</table>
 
-</article>
+
 
 <!-- Dialogs -->
 <div id="dialog-borrar" class="dialogos" title="Borrar álbum" style="display:none;s">
@@ -38,7 +38,7 @@
 	aunque <span class="negrita">no</span> se borrarán sus imágenes asociadas.
 </div>
 
-</div> <!-- #layoutContainer -->
+
 
 <script>
 (function(window, undefined){

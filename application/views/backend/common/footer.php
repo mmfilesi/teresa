@@ -1,11 +1,10 @@
+                </article>
+
+            <footer id="footer">
+                tiempo de carga: <?= $tiempo ?> sec. || memoria: <?= $memoria; ?>
+            </footer>
 
         </section>
-
-        <aside>
-            Pie
-        </aside>
-
-
 
     </body>
 </html>

@@ -1,4 +1,5 @@
-<nav id="sidebar">
+<nav id="sidebar" class="inlineBlock">
+    
         <div id="main-logo" class="">
             Nombre del sitio
             <span>o</span>

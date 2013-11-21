@@ -107,12 +107,6 @@ body {
     margin: 0 auto;
     padding: 1em;
     background: #fff;
-    /*border-radius: 20px;
-    border-top: 1px solid #ff9933;
-    border-left: 1px solid #ff9933;
-    border-bottom: 1px solid #cc6600;
-    border-right: 1px solid #cc6600; */
-
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -131,7 +125,6 @@ body {
 #topBar {
     border-bottom: 1px solid #666;
     background: #919293;
-    width:100%;
     padding:0.3em;
     margin-bottom: 1em;
     overflow: hidden;
@@ -139,16 +132,10 @@ body {
 
 
 #sidebar {
-    /*background: #f4f4f4;
-    border-right: 1px solid #ccc; */
-    float:left;
-    width: 20%; 
-    margin-right: 4.5%;
-    min-width: 150px;
+    width: 20%;
+    vertical-align: top; 
     border-bottom: 1px dotted #ccc;
-   /* border-bottom: 1px solid #aaaaaa;*/
- 
-        -webkit-box-sizing: border-box;
+         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
@@ -195,12 +182,25 @@ body {
 }
 
 #developArea {
-    float:right;
-    width: 75%;
-    max-width: 850px;
     min-height: 600px;
     padding:1em;
+    margin-left: 4%;
+    margin-bottom: 2em;
+    width: 75%;
+    vertical-align: top;
     border: 1px solid #efefef;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#footer {
+    margin: 0 auto;
+    width: 90%;
+    padding: 1em;
+    border: 1px solid #efefef;
+    text-align: center;
+    font-size: 0.8em;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -243,13 +243,13 @@ body {
 }
 
 .cols2Left {
-    float:left;
+    display:inline-block;
     width: 25%; 
     margin-right: 4.5%;
 }
 
 .cols2Right {
-    float:right;
+    display:inline-block;
     width: 70%;   
 }
 
@@ -263,6 +263,18 @@ body {
 
 .inlineBlock {
     display:inline-block;
+}
+
+.displayTable {
+    display: table;
+}
+
+.displayRow {
+    display: table-row;
+}
+
+.displayCell {
+    display: table-cell;
 }
 
 /* ==========================================================================
