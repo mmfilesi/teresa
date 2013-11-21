@@ -10,7 +10,7 @@ class L_imagenes {
   	} 
 
 
-/* Esta función puede servir para subir cualquier tipo de imagen */
+/* Sube cualquier tipo de imagen */
 	
 	public function uploadImagenes($rutaBase, $nombreImagen, $nombreInput) {
 
@@ -47,7 +47,28 @@ class L_imagenes {
 
 	}
 
-	/* Recibe una cadena en fecha española y devuelve el formato inglés */
+/* Genera una miniatura a partir de una imagen */
+
+	public function generateThumbails($file, $width, $height) {
+
+		$CI =& get_instance();
+
+		$CI->load->library('image_lib'); 
+
+		$config['image_library'] 	= 'gd2';
+		$config['source_image']		= $file;
+		$config['create_thumb'] 	= TRUE;
+		$config['maintain_ratio'] 	= TRUE;
+		$config['width']	 		= $width;
+		$config['height']	 		= $height;
+
+		$CI->image_lib->initialize($config); 
+
+		$CI->image_lib->resize();
+
+	}	
+
+/* Recibe una cadena en fecha española y devuelve el formato inglés */
 
 	public function dateSpToUk($fecha) {
 
@@ -56,7 +77,7 @@ class L_imagenes {
 		return $fecha; 
 	}
 
-	/* Recibe una cadena en fecha inglesa y la devuelve en formato español */
+/* Recibe una cadena en fecha inglesa y la devuelve en formato español */
 
 	public function dateUkToSp($fecha) {
 		

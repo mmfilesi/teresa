@@ -14,7 +14,7 @@
         <h5>Albums</h5>
             <ul>
                 <li><a href="<?= base_url(); ?>admin/addAlbum">Crear</a></li>
-                <li><a href="<?= base_url(); ?>admin/albums">Editar</a></li>
+                <li><a href="<?= base_url(); ?>admin/albumes">Editar</a></li>
             </ul>
                
         <h5>Páginas</h5>

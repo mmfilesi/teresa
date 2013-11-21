@@ -23,16 +23,21 @@ class Admin extends CI_Controller {
 		$this->load->view('backend/common/footer');
 	}
 
+	/* Cosas pendientes 
+		Redimensionar imagen destacada cuando pase el tamaño
+	*/
+
 /* =========================================================
 	Albums
 ============================================================ */
 
-	public function albums() {
+	public function albumes() {
 
-		$sidebar['selected'] 	= "albums";
+		$sidebar['selected'] 	= "albumes";
 		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
+		$header['breadcrumb']		 = "<a href='".base_url()."admin/albumes'>Álbumes</a>";
 
-		$header['titular'] 		= "Albums";
+		$header['titular'] 		= "Álbumes";
 		$data['todoAlbums']		= $this->modImagenes->getAlbums();
 
 		$footer['tiempo'] 		= $this->benchmark->elapsed_time();
@@ -47,14 +52,16 @@ class Admin extends CI_Controller {
 
 	public function addAlbum( $idAlbum ='add' ) {
 
-		$sidebar['selected'] 	= "albums";
-		$data['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
+		$sidebar['selected'] 	= "albumes";
+		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
 
 		if ( $idAlbum == 'add') {
-			$data['titular'] 			 = "Crear un álbum";
+			$header['titular'] 			 = "Crear un álbum";			
+			$header['breadcrumb']		 = "<a href='".base_url()."admin/albumes'>Álbumes</a> <span class='separador'>&rsaquo;</span> Añadir un álbum";
 			$data['accion'] 			 = "add";
 		} else {
-			$data['titular'] 			 = "Editar un álbum";
+			$header['titular'] 			 = "Editar un álbum";
+			$header['breadcrumb']		 = "<a href='".base_url()."admin/albumes'>Álbumes</a> <span class='separador'>&rsaquo;</span> Editar un álbum";
 			$data['accion'] 			 = "edit";
 			$data['todoAlbum'] 			 = $this->modImagenes->getAlbum($idAlbum);			
 			$data['todoAlbum']['fecha']	 = $this->libImagenes->dateUkToSp($data['todoAlbum']['fecha']);
@@ -64,9 +71,12 @@ class Admin extends CI_Controller {
 
 		$data['todoCategorias'] 		 = $this->modImagenes->getCategorias();
 
-		$this->load->view('backend/common/header', $data);
+		$footer['tiempo'] 		= $this->benchmark->elapsed_time();
+		$footer['memoria'] 		= $this->benchmark->memory_usage();
+
+		$this->load->view('backend/common/header', $header);
 		$this->load->view('backend/addAlbums', $data);
-		$this->load->view('backend/common/footer');
+		$this->load->view('backend/common/footer', $footer);
 	}
 
 	public function insertAlbum() {
@@ -77,7 +87,7 @@ class Admin extends CI_Controller {
 			$albumFecha 		= strip_tags( $this->input->post('albumFecha') );	
 			$albumLugar 		= addslashes( strip_tags($this->input->post('albumLugar') ) );
 			$albumGoogle 		= addslashes( strip_tags($this->input->post('albumGoogle') ) );
-			$albumDescripcion 	= addslashes( $this->input->post('albumDescripcion') ); // ESPECIFICAR AQUÍ LAS QUE DEJE
+			$albumDescripcion 	= addslashes( $this->input->post('albumDescripcion') ); 
 			$albumCategorias	= $this->input->post('albumCategorias');
 			
 			/* Recogemos dos fuentes de los tags por si no le dieron al botón añadir */
@@ -110,8 +120,10 @@ class Admin extends CI_Controller {
 				} 
 			} 			
 		
-			$albumTags = explode(",", $albumTags );
-			$this->libImagenes->insertTagsAlbum($idAlbum, $albumTags);			
+			if ( $albumTags AND $albumTags !=0 ) {
+				$albumTags = explode(",", $albumTags );
+				$this->libImagenes->insertTagsAlbum($idAlbum, $albumTags);
+			}			
 			$this->libImagenes->insertTagsAlbum($idAlbum, $listadoTags);
 
 
@@ -130,6 +142,9 @@ class Admin extends CI_Controller {
 					$extensionImagen = end($arrayTemporal);
 
 					$imagenDestacada = $nombreImagen.".".$extensionImagen;
+
+					//Miniatura
+					$this->libImagenes->generateThumbails($rutaBase.$imagenDestacada, 200, 100);
 
 					$this->modImagenes->updateAlbum($idAlbum, $albumNombre, $albumFecha, $albumLugar, $albumGoogle, $albumDescripcion, $imagenDestacada);
 
@@ -219,6 +234,8 @@ class Admin extends CI_Controller {
 						$extensionImagen = end($arrayTemporal);
 
 						$imagenDestacada = $nombreImagen.".".$extensionImagen;
+
+						$this->libImagenes->generateThumbails($rutaBase.$imagenDestacada, 200, 100);
 
 					}
 

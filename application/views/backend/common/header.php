@@ -36,7 +36,7 @@
 
                 <article id="developArea" class="inlineBlock">
                 
-                    <nav id="breadCrumb" class="bordeGrisBottom bordeGrisTop fuente08 padding-02">Albums <span class="">></span>Tal</nav>
+                    <nav id="breadCrumb" class="bordeGrisBottom bordeGrisTop fuente08 padding-02"><?= $breadcrumb; ?></nav>
 
                     <h3 class="azul_0777eb"><?= $titular; ?></h3>
             
