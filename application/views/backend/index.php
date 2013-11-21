@@ -2,7 +2,7 @@
 
 <?= $sidebar; ?>
 
-<article id="developArea" class="bordesRedondeados10 bordeGris">
+<article id="developArea" class="">
 asdasd
 </article>
 

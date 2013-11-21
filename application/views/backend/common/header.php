@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="<?= base_url(); ?>css/normalize.css">
-        <link rel="stylesheet" href="<?= base_url(); ?>css/main.css">
+        <link rel="stylesheet" href="<?= base_url(); ?>css/admin.css">
         <link rel="stylesheet" href="<?= base_url(); ?>css/jquery-ui.min.css">
 
         
@@ -29,5 +29,15 @@
         <div id="topBar">
             <div class="floatRight enlaceBlanco marginRight_01"> desconectar </div>
         </div>
-        <section id="main" class="ancho1024">
+        <section id="main" class="bordeGris">
+
+            <div class="layoutContainer">
+
+            <?= $sidebar; ?>
+
+            <article id="developArea">
+                
+                <nav id="breadCrumb" class="bordeGrisBottom bordeGrisTop fuente08 padding-02">Albums <span class="">></span>Tal</nav>
+
+                <h3 class="azul_0777eb"><?= $titular; ?></h3>
             

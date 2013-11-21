@@ -15,7 +15,7 @@
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
-        <section id="#main">
+        <section id="main">
             <header>
                 <h1>Cabecera</h1>
             </header>

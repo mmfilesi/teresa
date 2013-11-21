@@ -35,7 +35,7 @@ class Admin extends CI_Controller {
 		$data['titular'] 		= "Albums";
 		$data['todoAlbums']		= $this->modImagenes->getAlbums();
 
-		$this->load->view('backend/common/header');
+		$this->load->view('backend/common/header', $data);
 		$this->load->view('backend/albums', $data);
 		$this->load->view('backend/common/footer');
 		
@@ -61,7 +61,7 @@ class Admin extends CI_Controller {
 
 		$data['todoCategorias'] 		 = $this->modImagenes->getCategorias();
 
-		$this->load->view('backend/common/header');
+		$this->load->view('backend/common/header', $data);
 		$this->load->view('backend/addAlbums', $data);
 		$this->load->view('backend/common/footer');
 	}

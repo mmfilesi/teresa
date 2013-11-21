@@ -1,4 +1,9 @@
 <nav id="sidebar">
+        <div id="main-logo" class="">
+            Nombre del sitio
+            <span>o</span>
+        </div>
+
         <h5>Imágenes</h5>
             <ul>
                 <li>Subir</li>

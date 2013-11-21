@@ -1,11 +1,3 @@
-<div class="layoutContainer">
-
-<?= $sidebar; ?>
-
-<article id="developArea" class="bordesRedondeados10 bordeGris ">
-
-<h3 class="azul_0777eb"><?= $titular; ?></h3>
-
 	<table class="listadoTablas">
 		<tr>
 			<th></th>
