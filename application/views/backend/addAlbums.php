@@ -60,7 +60,7 @@
 
 				<span class="negrita">Categorías</span> 
 
-				<div id="contenedorCategorias" class="alto100s ancho250">
+				<div id="contenedorCategorias" class="caja">
 					<?php if ( $todoCategorias AND count($todoCategorias) > 0 ) { ?>
 
 						<?php foreach ( $todoCategorias as $clave ) { ?>
@@ -204,13 +204,14 @@
 	$("#js-addCategoria").click(function(event) {
 
 		event.preventDefault();
-
+ 
 		var value = $('#addCategoria').val();
 
-		if ( value != "" ) {
+		if ( value != '' ) {
 			data = { 'value': value };
-			$.post("<?= site_url('admin/insertCategoria'); ?>", data).done(function(data) {
-				$("#contenedorCategorias").html(data);
+			$.post("<?= site_url('admin/insertCategoria'); ?>", data).done(function(data) {				
+				$('#contenedorCategorias').prepend(data);
+				$('#addCategoria').val('');
 			});
 		}
 

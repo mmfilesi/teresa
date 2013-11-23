@@ -328,18 +328,17 @@ class Admin extends CI_Controller {
 			$value = addslashes( strip_tags($this->input->post('value') ) );
 
 			if ( $value != "" ) {
-				$this->modImagenes->insertCategoria($value);
+
+				$idCategoria = $this->modImagenes->insertCategoria($value);
+
+					/* De momento, en tanto que apenas hay que pintar un convo de checkoptions con esto,
+					devuelvo el ajax directamente. Si más adelante se complica, preparar una vista ex-profeso */
+
+				$cadena = "<input type='checkbox' name='albumCategorias[".$idCategoria."]' value='".$idCategoria."' class='azul_0777eb'  checked  />".$value."<br />";
+			
+				echo $cadena;
 			}
 
-		}
-
-		/* De momento, en tanto que apenas hay que pintar un convo de checkoptions con esto,
-		devuelvo el ajax directamente. Si más adelante se complica, preparar una vista ex-profeso */
-
-		$todoCategorias = $this->modImagenes->getCategorias();
-
-		foreach ( $todoCategorias as $clave ) {
-			echo "<input type='checkbox' name='".$clave['id']."' value='".$clave['id']."' class='azul_0777eb'>".$clave['value']."<br />";
 		}
 
 	} //#insertCategoria
