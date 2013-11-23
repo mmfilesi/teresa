@@ -24,7 +24,7 @@ class Admin extends CI_Controller {
 	}
 
 	/* Cosas pendientes 
-		Redimensionar imagen destacada cuando pase el tamaño
+		No perder el tag seleccionado de categorías.
 	*/
 
 /* =========================================================
@@ -35,7 +35,7 @@ class Admin extends CI_Controller {
 
 		$sidebar['selected'] 	= "albumes";
 		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
-		$header['breadcrumb']		 = "<a href='".base_url()."admin/albumes'>Álbumes</a>";
+		$header['breadcrumb']	= "<a href='".base_url()."admin/albumes'>Álbumes</a>";
 
 		$header['titular'] 		= "Álbumes";
 		$data['todoAlbums']		= $this->modImagenes->getAlbums();
@@ -283,6 +283,39 @@ class Admin extends CI_Controller {
 		
 	} //#deleteAlbum
 
+	public function ordenarAlbumes() {
+		$sidebar['selected'] 	= "ordenarAlbumes";
+		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
+		$header['breadcrumb']	= "<a href='".base_url()."admin/albumes'>Álbumes</a> <span class='separador'>&rsaquo;</span> Ordenar";
+
+		$header['titular'] 		= "Ordenar álbumes";
+		$data['todoAlbums']		= $this->modImagenes->getAlbums();
+
+		$footer['tiempo'] 		= $this->benchmark->elapsed_time();
+		$footer['memoria'] 		= $this->benchmark->memory_usage();
+		
+		$this->load->view('backend/common/header', $header);
+		$this->load->view('backend/albumsOrdenar', $data);
+		$this->load->view('backend/common/footer', $footer);
+	}
+
+	public function ordenarAlbumsUpdate() {
+
+		if (isset($_POST) && $_POST) {
+
+			$ordenAlbums = $this->input->post('ordenAlbums');
+			$ordenAlbums = explode(",", $ordenAlbums);
+			$contador = 1;
+			foreach ($ordenAlbums as $clave) {
+				$idAlbum = str_replace('js-capsula_', '', $clave);
+				$this->modImagenes->updateOrdenAlbums($idAlbum, $contador);
+				$contador++;
+			}
+
+		}
+
+	}
+
 /*================================================================
 	Categorías
 =================================================================*/
@@ -310,6 +343,8 @@ class Admin extends CI_Controller {
 		}
 
 	} //#insertCategoria
+
+
 
 
 }

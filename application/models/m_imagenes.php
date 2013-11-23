@@ -72,6 +72,14 @@ class M_imagenes extends CI_Model {
 
 	}
 
+	public function updateOrdenAlbums($clave, $contador) {
+		$data = array( 'orden' => $contador );
+		$this->db->where('id', $clave);
+		$this->db->update('ter_albums', $data);
+		$sql = $this->db->last_query();
+		//die($sql);
+	}
+
 	public function deleteAlbumCategorias($idAlbum) {
 		
 		$this->db->where('id_album', $idAlbum);
