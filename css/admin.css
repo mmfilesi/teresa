@@ -99,6 +99,7 @@ textarea {
 
 body {
     background: #f8f8f8;
+    overflow-y: scroll;
     /*background:url(images/bg-main.png);
     background-repeat:repeat-x;    */
 }
@@ -346,13 +347,21 @@ body {
 }
 
 .listadoTablas th {
-    padding:0.2em;
-    border-bottom: 1px solid #ededed;
+    padding:0.4em;
+    border-bottom: 3px solid #ededed;
+    border-top: 3px solid #ededed;
+    background: #f8f8f8;
+    font-size: 0.9em;
+    color:#333;
 }
 
 .listadoTablas td {
     padding:0.2em;
     border-bottom: 1px solid #ededed;
+}
+
+.listadoTablas tr:hover {
+    background: #ffffe7;
 }
 
 /* ==========================================================================
@@ -386,6 +395,10 @@ body {
 
 .fuente08 {
     font-size: 0.8em;
+}
+
+.fuente085 {
+    font-size: 0.85em;
 }
 
 

@@ -19,7 +19,7 @@
 				}
 			?>
 			<td class="ancho50 textoCentrado"><img src="<?= $miniatura; ?>" width="50" height="25" /></td>
-			<td id="js-nombre_<?= $clave['id']; ?>"><?= $clave['nombre']; ?></td>
+			<td id="js-nombre_<?= $clave['id']; ?>" class="fuente085"><?= $clave['nombre']; ?></td>
 			<td class="ancho50 textoCentrado">
 				<a href="<?= base_url(); ?>admin/albumImagenes/<?= $clave['id']; ?>">
 					<img src="<?= base_url(); ?>css/iconos/ico-guardar.png" widht="20" height="20" id="js-imagenes_<?= $clave['id']; ?>" />
