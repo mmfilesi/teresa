@@ -14,7 +14,7 @@ class M_imagenes extends CI_Model {
 
 	public function getAlbums() {
 		$this->db->order_by('orden');
-		$this->db->order_by('id');
+		$this->db->order_by('indexacion');
 		$query = $this->db->get('ter_albums');
 		return $query->result_array();
 	}

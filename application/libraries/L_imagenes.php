@@ -49,7 +49,15 @@ class L_imagenes {
 
 /* Genera una miniatura a partir de una imagen */
 
-	public function generateThumbails($file, $width, $height) {
+	public function generateThumbails($file) {
+
+		$this->instance =& get_instance();        
+        $this->instance->load->model( 'm_options', 'modOptions' );
+
+		$options = $this->instance->modOptions->getMaxThumb();
+
+		$width = $options[0]['value'];
+		$height = $options[1]['value'];
 
 		$CI =& get_instance();
 
@@ -58,7 +66,7 @@ class L_imagenes {
 		$config['image_library'] 	= 'gd2';
 		$config['source_image']		= $file;
 		$config['create_thumb'] 	= TRUE;
-		$config['maintain_ratio'] 	= TRUE;
+		$config['maintain_ratio'] 	= FALSE;
 		$config['width']	 		= $width;
 		$config['height']	 		= $height;
 
@@ -66,7 +74,53 @@ class L_imagenes {
 
 		$CI->image_lib->resize();
 
-	}	
+	}
+
+	public function resizeImageIfLong($file) {
+
+		$this->instance =& get_instance();        
+        $this->instance->load->model( 'm_options', 'modOptions' );
+
+		$options = $this->instance->modOptions->getMaxImg();
+
+		$maxWidth = $options[0]['value'];
+		$maxHeight = $options[1]['value'];
+
+		$imageData = getimagesize($file);
+				
+		if ( ($imageData[0] > $imageData[1]) && ($imageData[0] > $maxWidth) ) {
+			$width = $maxWidth;
+			$height = ($maxWidth / $imageData[0]) * $imageData[1];
+			$this->resizeImage($file, $width, $height);
+			
+		} elseif ( ($imageData[0] < $imageData[1]) && ($imageData[1] > $maxHeight) ) {
+			$height = $maxHeight;
+			$width = ($maxHeight / $imageData[1]) * $imageData[0];
+			$this->resizeImage($file, $width, $height);
+		}
+
+	}
+
+/* Recorta una imagen */
+
+	public function resizeImage($file, $width, $height) {
+
+		$CI =& get_instance();
+
+		$CI->load->library('image_lib'); 
+
+		$config['image_library'] 	= 'gd2';
+		$config['source_image']		= $file;
+		$config['create_thumb'] 	= FALSE;
+		$config['maintain_ratio'] 	= FALSE;
+		$config['width']	 		= $width;
+		$config['height']	 		= $height;
+
+		$CI->image_lib->initialize($config); 
+
+		$CI->image_lib->resize();
+
+	}		
 
 /* Recibe una cadena en fecha española y devuelve el formato inglés */
 
@@ -91,7 +145,7 @@ class L_imagenes {
 
 	public function insertTagsAlbum($idAlbum, $arrayTags) {
 
-		if ( count($arrayTags) > 0 ) {
+		if ( count($arrayTags) > 0 && $arrayTags && $arrayTags != "") {
 
 				foreach ( $arrayTags as $clave ) {
 					// Comprobamos si existe

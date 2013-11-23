@@ -114,7 +114,7 @@ class Admin extends CI_Controller {
 
 			$idAlbum = $this->modImagenes->insertAlbum($albumNombre, $albumFecha, $albumLugar, $albumGoogle, $albumDescripcion, $imagenDestacada);
 
-			if ( count($albumCategorias) > 0 ) {
+			if ( count($albumCategorias) > 0 && $albumCategorias != "" ) {
 				foreach ( $albumCategorias as $clave ) {
 					$this->modImagenes->insertCategoriaToAlbum($idAlbum, $clave);
 				} 
@@ -143,8 +143,11 @@ class Admin extends CI_Controller {
 
 					$imagenDestacada = $nombreImagen.".".$extensionImagen;
 
-					//Miniatura
-					$this->libImagenes->generateThumbails($rutaBase.$imagenDestacada, 200, 100);
+					// Miniatura
+					$this->libImagenes->generateThumbails($rutaBase.$imagenDestacada);
+
+					// Sacada la miniatura, redimensionamos la imagen si sobrepasa un ancho o alto máximo
+					$this->libImagenes->resizeImageIfLong($rutaBase.$imagenDestacada);					
 
 					$this->modImagenes->updateAlbum($idAlbum, $albumNombre, $albumFecha, $albumLugar, $albumGoogle, $albumDescripcion, $imagenDestacada);
 
@@ -152,7 +155,7 @@ class Admin extends CI_Controller {
 
 			} // #if ( isset($_FILES['imagenDestacada']['tmp_name']) )	
 		
-		redirect ( 'admin/addAlbum/'.$idAlbum, 'location', 301 );	
+			redirect ( 'admin/addAlbum/'.$idAlbum, 'location', 301 );	
 
 		} // #if (isset($_POST) && $_POST)
 
@@ -229,13 +232,16 @@ class Admin extends CI_Controller {
 					$envio = $this->libImagenes->uploadImagenes($rutaBase, $nombreImagen, $nombreInput);
 
 					if ( $envio == 1 ) {
+
 						$extensionImagen = $_FILES['imagenDestacada']['name'];
 						$arrayTemporal = explode(".", $extensionImagen);
 						$extensionImagen = end($arrayTemporal);
 
 						$imagenDestacada = $nombreImagen.".".$extensionImagen;
 
-						$this->libImagenes->generateThumbails($rutaBase.$imagenDestacada, 200, 100);
+						$this->libImagenes->generateThumbails($rutaBase.$imagenDestacada);
+
+						$this->libImagenes->resizeImageIfLong($rutaBase.$imagenDestacada);	
 
 					}
 

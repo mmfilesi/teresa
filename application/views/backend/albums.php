@@ -10,11 +10,15 @@
 		<?php foreach ( $todoAlbums as $clave ) { ?>
 		<tr id="js-fila_<?= $clave['id']; ?>">
 			<?php 
-				$imagenDestacada = $clave['imagen_destacada'];
-				$imagenDestacada = explode(".", $imagenDestacada);
-				$miniatura = $imagenDestacada[0]."_thumb.".$imagenDestacada[1];
+				if ( $clave['imagen_destacada'] != "pendiente" ) {
+					$imagenDestacada = $clave['imagen_destacada'];
+					$imagenDestacada = explode(".", $imagenDestacada);
+					$miniatura = base_url()."/images/albums/".$clave['id']."/".$imagenDestacada[0]."_thumb.".$imagenDestacada[1];
+				} else {
+					$miniatura = base_url()."/images/noThumbail.png";
+				}
 			?>
-			<td class="ancho50 textoCentrado"><img src="<?= base_url(); ?>/images/albums/<?= $clave['id']; ?>/<?= $miniatura; ?>" width="50" height="25" /></td>
+			<td class="ancho50 textoCentrado"><img src="<?= $miniatura; ?>" width="50" height="25" /></td>
 			<td id="js-nombre_<?= $clave['id']; ?>"><?= $clave['nombre']; ?></td>
 			<td class="ancho50 textoCentrado">
 				<a href="<?= base_url(); ?>admin/albumImagenes/<?= $clave['id']; ?>">
