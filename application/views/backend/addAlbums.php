@@ -7,21 +7,21 @@
 		<!-- datos básicos -->
 			<div class="inlineBlock ancho50c verticalTop">	
 				<p><label for="albumNombre"><span class="negrita">Nombre</span></label>	<br />
-				<input type="text" name="albumNombre" id="albumNombre" class="ancho250 azul_0777eb" 
+				<input type="text" name="albumNombre" id="albumNombre" class="inputText" 
 				<?php if ( $accion == "edit" ) { ?>
 					value="<?= $todoAlbum['nombre']; ?>"
 				<?php } ?>
 				/></p>
 
 				<p><label for="albumFecha"><span class="negrita">Fecha</span></label> <br />	
-				<input type="text" name="albumFecha" id="albumFecha" class="ancho250 azul_0777eb" 
+				<input type="text" name="albumFecha" id="albumFecha" class="inputText" 
 				<?php if ( $accion == "edit" ) { ?>
 					value="<?= $todoAlbum['fecha']; ?>"
 				<?php } ?>
 				/></p>
 
 				<p><label for="albumLugar"><span class="negrita">Lugar</span></label> <br />	
-				<input type="text" name="albumLugar" id="albumLugar" class="ancho250 azul_0777eb" 
+				<input type="text" name="albumLugar" id="albumLugar" class="inputText" 
 				<?php if ( $accion == "edit" ) { ?>
 					value="<?= $todoAlbum['lugar']; ?>"
 				<?php } ?>
@@ -81,7 +81,7 @@
 				</div>
 
 				<p><br />
-				<input type="text" name="addCategoria" id="addCategoria" class="ancho250 azul_0777eb" /> <button id="js-addCategoria" class="botonMas">+</button>
+				<input type="text" name="addCategoria" id="addCategoria" class="inputText" /> <button id="js-addCategoria" class="botonMas">+</button>
 				</p>
 
 			</div> <!-- #categorías -->
@@ -91,7 +91,7 @@
 
 				<label for="albumTags"><span class="negrita">Etiquetas</span> </label>	<br />
 
-				<input type="text" name="albumTags" id="albumTags" class="ancho250 azul_0777eb" placeholder="separadas por comas"/>
+				<input type="text" name="albumTags" id="albumTags" class="inputText" placeholder="separadas por comas"/>
 				<button id="js-addTag" class="botonMas">+</button>
 
 				<div id="contenedorTags">
@@ -125,7 +125,7 @@
 				<?php } ?>
 			<?php } ?>	
 
-		<button id="js-guardar" class="azul floatRight">guardar</button>
+		<button id="js-guardar" class="botonAzul floatRight">guardar</button>
 
 	</form>
 

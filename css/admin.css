@@ -100,28 +100,22 @@ textarea {
 body {
     background: #f8f8f8;
     overflow-y: scroll;
+    font-family: arial, sans-serif;
     /*background:url(images/bg-main.png);
     background-repeat:repeat-x;    */
 }
 
-#main {
-    font-family: arial, sans-serif;
+#main {    
     max-width: 1024px;
     margin: 0 auto;
-    padding: 1em;
-    background: #fff;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    padding: 1em;    
+    margin-bottom: 15px;
 } 
 
 #main-logo {
     border:1px solid #efefef;
     margin-bottom: 1em;
     padding:0.5em;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-    box-sizing: border-box;
 }
 
 
@@ -138,9 +132,6 @@ body {
     width: 20%;
     vertical-align: top; 
     border-bottom: 1px dotted #ccc;
-         -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-    box-sizing: border-box;
 }
 
 #sidebar h5 {
@@ -174,14 +165,15 @@ body {
     border-collapse: collapse;
 }
 
-#sidebar li:hover {
-    background: #fffbd6;
-    color: #025986;
-}
 
 #sidebar li a {
     text-decoration: none;
     color: #0777eb;
+}
+
+#sidebar li a:hover {
+    text-decoration: none;
+    color: #ff9900;
 }
 
 #developArea {
@@ -195,6 +187,14 @@ body {
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
     box-sizing: border-box;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border-top: 1px solid #e9eaea;
+    border-left: 1px solid #e9eaea;
+    border-bottom: 1px solid #d8d6d6;
+    border-right: 1px solid #d8d6d6;
+
 }
 
 #footer {
@@ -202,11 +202,10 @@ body {
     width: 90%;
     padding: 1em;
     border: 1px solid #efefef;
-    text-align: center;
     font-size: 0.8em;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-    box-sizing: border-box;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 
 /* ==========================================================================
@@ -303,7 +302,7 @@ body {
 }
 
 .caja {
-         -webkit-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
@@ -368,6 +367,23 @@ body {
 }
 
 /* ==========================================================================
+   Formularios
+   ========================================================================== */
+
+.inputText {
+    color:#0777eb;
+    width: 200px;
+    padding:0.3em;
+    border-top: 1px solid #d8d6d6;
+    border-left: 1px solid #d8d6d6;
+    border-bottom: 1px solid #e9eaea;
+    border-right: 1px solid #e9eaea;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+    border-radius: 5px;
+}   
+
+/* ==========================================================================
    Enlaces
    ========================================================================== */
 
@@ -404,6 +420,22 @@ body {
     font-size: 0.85em;
 }
 
+.fuente09 {
+    font-size: 0.9em;
+}
+
+.fuente10 {
+    font-size: 1em;
+}
+
+.fuente11 {
+    font-size: 1.1em;
+}
+
+.versalitas {
+    font-variant: small-caps
+}
+
 
 /* ==========================================================================
    Anchos y altos
@@ -424,6 +456,10 @@ body {
 
 .ancho50c {
    width:49%;
+}
+
+.ancho100c {
+   width:100%;
 }
 
 .alto100s {
@@ -506,12 +542,44 @@ body {
     border-radius: 10px;
 }
 
+
+/* ==========================================================================
+   Fondos
+   ========================================================================== */
+
+.backgroundBlanco {
+    background: #fff;
+}
+
+
 /* ==========================================================================
    Botones
    ========================================================================== */
 
 
 button.botonMas {
+    color: #000;
+    font-size: bold;
+    padding: 2px 6px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border: 0;
+    -moz-box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,0.5);
+    -webkit-box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,0.5);
+    box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,0.5);
+    text-shadow:
+        0px -1px 0px rgba(000,000,000,0.7),
+        0px 1px 0px rgba(255,255,255,0.3);
+}
+
+button.botonMasVerde {
     color: #ffffff;
     font-size: bold;
     padding: 2px 6px;
@@ -542,19 +610,13 @@ button.botonMas {
 
 }
 
-button.azul {
+.botonAzul {
     color: #ffffff;
     padding: 5px 20px;
-    background: -moz-linear-gradient(
-        top,
-        #42aaff 0%,
-        #003366);
-    background: -webkit-gradient(
-        linear, left top, left bottom, 
-        from(#42aaff),
-        to(#003366));
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    background: -moz-linear-gradient(top, #42aaff 0%, #003366);
+    background: -webkit-gradient(linear, left top, left bottom, from(#42aaff), to(#003366));
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
     border-radius: 10px;
     border: 0;
     -moz-box-shadow:
@@ -569,6 +631,26 @@ button.azul {
     text-shadow:
         0px -1px 0px rgba(000,000,000,0.7),
         0px 1px 0px rgba(255,255,255,0.3);
+}
+
+.botonBlanco {
+    color: #333;
+    padding: 5px 20px;
+    background: -moz-linear-gradient(top, #f8f8f8 0%, #d9d6d6);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8),to(#d9d6d6));
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border: 0;
+        -moz-box-shadow:
+            0px 1px 3px rgba(000,000,000,0.5),
+            inset 0px 0px 1px rgba(255,255,255,0.5);
+        -webkit-box-shadow:
+            0px 1px 3px rgba(000,000,000,0.5),
+            inset 0px 0px 1px rgba(255,255,255,0.5);
+    box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,0.5);
 }
 
 button.rojo {
@@ -615,47 +697,25 @@ button.verde {
     -webkit-border-radius: 10px;
     border-radius: 10px;
     border: 0px solid #165700;
-    -moz-box-shadow:
-        0px 1px 3px rgba(000,000,000,0.5),
-        inset 0px 0px 1px rgba(255,255,255,0.5);
-    -webkit-box-shadow:
-        0px 1px 3px rgba(000,000,000,0.5),
-        inset 0px 0px 1px rgba(255,255,255,0.5);
-    box-shadow:
-        0px 1px 3px rgba(000,000,000,0.5),
-        inset 0px 0px 1px rgba(255,255,255,0.5);
-    text-shadow:
-        0px -1px 0px rgba(000,000,000,0.7),
-        0px 1px 0px rgba(255,255,255,0.3);
+
 }
 
-button.blanco {
-    color: #333;
-    padding: 5px 20px;
-    background: -moz-linear-gradient(
-        top,
-        #ededed 0%,
-        #ccc);
-    background: -webkit-gradient(
-        linear, left top, left bottom, 
-        from(#ededed),
-        to(#ccc));
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    border: 0px solid #666;
-    -moz-box-shadow:
+button.botonMas:hover, .botonBlanco:hover, .botonAzul:hover {
+    color: #fff;
+    background: -moz-linear-gradient(top, #ffcc33 0%, #ff9900);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffcc33), to(#ff9900));
+        -moz-box-shadow:
         0px 1px 3px rgba(000,000,000,0.5),
-        inset 0px 0px 1px rgba(255,255,255,0.5);
+        inset 0px 0px 1px rgba(204,102,0,0.5);
     -webkit-box-shadow:
         0px 1px 3px rgba(000,000,000,0.5),
-        inset 0px 0px 1px rgba(255,255,255,0.5);
+        inset 0px 0px 1px rgba(204,102,0,0.5);
     box-shadow:
         0px 1px 3px rgba(000,000,000,0.5),
-        inset 0px 0px 1px rgba(255,255,255,0.5);
+        inset 0px 0px 1px rgba(204,102,0,0.5);
     text-shadow:
-        0px -1px 0px rgba(000,000,000,0.7),
-        0px 1px 0px rgba(255,255,255,0.3);
+        0px 0px 0px rgba(000,000,000,0.7),
+        0px 0px 0px rgba(255,255,255,0.3);
 }
 
 /* ==========================================================================

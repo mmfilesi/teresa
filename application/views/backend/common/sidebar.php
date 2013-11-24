@@ -1,6 +1,6 @@
-<nav id="sidebar" class="inlineBlock">
+<nav id="sidebar" class="inlineBlock caja">
     
-        <div id="main-logo" class="">
+        <div id="main-logo" class="caja">
             Nombre del sitio
             <span>o</span>
         </div>

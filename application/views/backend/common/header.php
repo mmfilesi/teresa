@@ -30,7 +30,7 @@
             <div class="floatRight enlaceBlanco marginRight_01"> desconectar </div>
         </div>
 
-        <section id="main" class="bordeGris layoutContainer">
+        <section id="main" class="bordeGris layoutContainer caja backgroundBlanco bordesRedondeados10">
 
                 <?= $sidebar; ?>
 
