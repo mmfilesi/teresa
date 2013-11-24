@@ -9,14 +9,18 @@ class M_options extends CI_Model {
 	}
 	
 /*================================================================
-	Opciones
+	Generales
 =================================================================*/
 
-	public function getOptions($options) {
+	public function getOpciones() {
 
 		$query = $this->db->get('ter_options');
 
 		return $query->result_array();
+	}
+
+	public function updateOptions($data) {
+		$this->db->update('ter_options');
 	}
 
 /*================================================================

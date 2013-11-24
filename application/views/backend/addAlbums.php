@@ -197,64 +197,64 @@
 			toolbar: "forecolor backcolor | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent"
 		}); 
 
+
+		// Interactivismos formulario
+
+		$("#js-addCategoria").click(function(event) {
+
+			event.preventDefault();
+	 
+			var value = $('#addCategoria').val();
+
+			if ( value != '' ) {
+				data = { 'value': value };
+				$.post("<?= site_url('admin/insertCategoria'); ?>", data).done(function(data) {				
+					$('#contenedorCategorias').prepend(data);
+					$('#addCategoria').val('');
+				});
+			}
+
+		});
+
+		$("#js-cambiar").click(function() {
+			var cadena = "<p><input type='file' name='imagenDestacada'></p>";
+			$('#js-contenedorImagenDestacada').html(cadena);
+		});
+
+		$("#js-addTag").click(function(event) {
+
+			event.preventDefault();
+
+			var cadena = "";
+			var cadena2 = "";
+			var arrayTags = $("#albumTags").val();
+			var tagsYaListados = $(".listadoTags").length;
+			var contador;
+
+			arrayTags = arrayTags.split(",");
+
+			for ( var i=0; i < arrayTags.length; i++ ) {
+				contador = i+tagsYaListados;
+				cadena += "<span id='js-tag-"+contador+"' class='listadoTags'>&otimes; "+arrayTags[i]+"</span>";
+				cadena2 = "<input type='hidden' id='input-tag-"+contador+"' name='inputTags["+contador+"]' value='"+arrayTags[i]+"' />";
+				$("#js-guardar").before(cadena2);
+			}
+
+			$("#contenedorTags").prepend(cadena);
+			$("#albumTags").val("");
+
+		});
+
+		$("#contenedorTags").on("click",".listadoTags", function() {
+			var id = $(this).attr('id');
+			id = id.replace("js-tag-", "");
+			id = "#input-tag-"+id;
+			$(id).remove();
+			$(this).remove();
+		});
+
+
 	});
-
-	// Interactivismos formulario
-
-	$("#js-addCategoria").click(function(event) {
-
-		event.preventDefault();
- 
-		var value = $('#addCategoria').val();
-
-		if ( value != '' ) {
-			data = { 'value': value };
-			$.post("<?= site_url('admin/insertCategoria'); ?>", data).done(function(data) {				
-				$('#contenedorCategorias').prepend(data);
-				$('#addCategoria').val('');
-			});
-		}
-
-	});
-
-	$("#js-cambiar").click(function() {
-		var cadena = "<p><input type='file' name='imagenDestacada'></p>";
-		$('#js-contenedorImagenDestacada').html(cadena);
-	});
-
-	$("#js-addTag").click(function(event) {
-
-		event.preventDefault();
-
-		var cadena = "";
-		var cadena2 = "";
-		var arrayTags = $("#albumTags").val();
-		var tagsYaListados = $(".listadoTags").length;
-		var contador;
-
-		arrayTags = arrayTags.split(",");
-
-		for ( var i=0; i < arrayTags.length; i++ ) {
-			contador = i+tagsYaListados;
-			cadena += "<span id='js-tag-"+contador+"' class='listadoTags'>&otimes; "+arrayTags[i]+"</span>";
-			cadena2 = "<input type='hidden' id='input-tag-"+contador+"' name='inputTags["+contador+"]' value='"+arrayTags[i]+"' />";
-			$("#js-guardar").before(cadena2);
-		}
-
-		$("#contenedorTags").prepend(cadena);
-		$("#albumTags").val("");
-
-	});
-
-	$("#contenedorTags").on("click",".listadoTags", function() {
-		var id = $(this).attr('id');
-		id = id.replace("js-tag-", "");
-		id = "#input-tag-"+id;
-		$(id).remove();
-		$(this).remove();
-	});
-
-
 
 })( window );  
 </script>

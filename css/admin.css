@@ -307,6 +307,9 @@ body {
         -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+.clear {
+    clear:both;
 }
 
 /* ==========================================================================
@@ -473,6 +476,10 @@ body {
     text-align:left;
 }
 
+.textoRight {
+    text-align:right;
+}
+
 
 /* ==========================================================================
    Bordes
@@ -608,6 +615,35 @@ button.verde {
     -webkit-border-radius: 10px;
     border-radius: 10px;
     border: 0px solid #165700;
+    -moz-box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,0.5);
+    -webkit-box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,0.5);
+    box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,0.5);
+    text-shadow:
+        0px -1px 0px rgba(000,000,000,0.7),
+        0px 1px 0px rgba(255,255,255,0.3);
+}
+
+button.blanco {
+    color: #333;
+    padding: 5px 20px;
+    background: -moz-linear-gradient(
+        top,
+        #ededed 0%,
+        #ccc);
+    background: -webkit-gradient(
+        linear, left top, left bottom, 
+        from(#ededed),
+        to(#ccc));
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border: 0px solid #666;
     -moz-box-shadow:
         0px 1px 3px rgba(000,000,000,0.5),
         inset 0px 0px 1px rgba(255,255,255,0.5);

@@ -25,7 +25,7 @@
 
         <h5>Admin</h5>
             <ul>
-                <li>Ajustes</li>
+                <li><a href="<?= base_url(); ?>admin/ajustes">Ajustes</a></li>
                 <li>Usuarios</li>
             </ul>
 </nav>

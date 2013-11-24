@@ -5,11 +5,8 @@ class Admin extends CI_Controller {
 		function __construct(){
 
 		parent::__construct();
-
 			
-		$this->load->library('L_imagenes', '', 'libImagenes');
-
-		//$this->load->model( 'm_imagenes', 'modImagenes' );
+		$this->load->library('L_imagenes', '', 'libImagenes');		
 		
 	}
 
@@ -344,7 +341,53 @@ class Admin extends CI_Controller {
 	} //#insertCategoria
 
 
+/* =========================================================
+	Opciones
+============================================================ */
 
+	public function ajustes() {
+
+		$this->load->model( 'm_options', 'modOptions' );		
+
+		$sidebar['selected'] 	= "ajustes";
+		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
+		$header['breadcrumb']	= "<a href='".base_url()."admin/ajustes'>Ajustes</a>";
+
+		$header['titular'] 		= "Ajustes";
+
+		$data['todoOpciones'] 	= $this->modOptions->getOpciones();
+
+		$footer['tiempo'] 		= $this->benchmark->elapsed_time();
+		$footer['memoria'] 		= $this->benchmark->memory_usage();
+		
+		$this->load->view('backend/common/header', $header);
+		$this->load->view('backend/opciones', $data);
+		$this->load->view('backend/common/footer', $footer); 
+
+	} //#opciones
+
+	public function optionsUpdateImg() {
+
+		if (isset($_POST) && $_POST) {
+
+			$this->load->model( 'm_options', 'modOptions' );
+
+			$maxWidth 		= addslashes( strip_tags($this->input->post('maxWidth') ) );
+			$maxHeight 		= addslashes( strip_tags($this->input->post('maxHeight') ) );
+			$maxWidthThumb 	= addslashes( strip_tags($this->input->post('maxWidthThumb') ) );
+			$maxHeightThumb = addslashes( strip_tags($this->input->post('maxHeightThumb') ) );
+
+			$data = array( 	'thumb_width'		=> $maxWidthThumb,
+							'thumb_height'		=> $maxHeightThumb,
+							'img_main_width'	=> $maxWidth,
+							'img_main_height'	=> $maxHeight
+						);
+
+			$this->modOptions->updateOptions($data);
+
+		}
+
+	}
 
 }
 
