@@ -344,27 +344,7 @@ body {
    Tablas
    ========================================================================== */
 
-.listadoTablas {
-   width:100%;
-}
 
-.listadoTablas th {
-    padding:0.4em;
-    border-bottom: 3px solid #ededed;
-    border-top: 3px solid #ededed;
-    background: #f8f8f8;
-    font-size: 0.9em;
-    color:#333;
-}
-
-.listadoTablas td {
-    padding:0.2em;
-    border-bottom: 1px solid #ededed;
-}
-
-.listadoTablas tr:hover {
-    background: #ffffe7;
-}
 
 /* ==========================================================================
    Formularios

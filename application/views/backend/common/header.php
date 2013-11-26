@@ -20,6 +20,8 @@
         <script src="<?= base_url(); ?>js/vendor/jquery.min.js"></script>
         <script src="<?= base_url(); ?>js/vendor/jquery-ui.min.js"></script>
         <script src="<?= base_url(); ?>js/vendor/tinymce/tinymce.min.js"></script>
+
+        
      
         <script src="<?= base_url(); ?>js/plugins.js"></script>
         <script src="<?= base_url(); ?>js/main.js"></script>
