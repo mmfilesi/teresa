@@ -376,6 +376,31 @@ body {
     color:#fbfcbb;
 }
 
+ .botonRedondo {
+    color: #000;
+    font-size: bold;
+    padding: 2px 6px;
+    width:10px;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border: 0;
+    -moz-box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,0.5);
+    -webkit-box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,0.5);
+    box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 1px rgba(255,255,255,0.5);
+    text-shadow:
+        0px -1px 0px rgba(000,000,000,0.7),
+        0px 1px 0px rgba(255,255,255,0.3);
+    text-align: center;
+    cursor:pointer;
+}
+
 /* ==========================================================================
    Fuentes
    ========================================================================== */
@@ -390,6 +415,14 @@ body {
 
 .naranja_ffb12a {
     color:#ffb12a;
+}
+
+.fuente07 {
+    font-size: 0.7em;
+}
+
+.fuente075 {
+    font-size: 0.75em;
 }
 
 .fuente08 {
@@ -453,6 +486,9 @@ body {
    Márgenes y paddings
    ========================================================================== */
 
+.margin-05 {
+    margin: 0.5em;
+}
 
 .marginRight_01 {
     margin-right: 1em;
@@ -611,6 +647,7 @@ button.botonMasVerde {
     text-shadow:
         0px -1px 0px rgba(000,000,000,0.7),
         0px 1px 0px rgba(255,255,255,0.3);
+    cursor: pointer;
 }
 
 .botonBlanco {
@@ -631,6 +668,7 @@ button.botonMasVerde {
     box-shadow:
         0px 1px 3px rgba(000,000,000,0.5),
         inset 0px 0px 1px rgba(255,255,255,0.5);
+    cursor: pointer;
 }
 
 button.rojo {
@@ -680,7 +718,7 @@ button.verde {
 
 }
 
-button.botonMas:hover, .botonBlanco:hover, .botonAzul:hover {
+button.botonMas:hover, .botonBlanco:hover, .botonAzul:hover, .botonRedondo:hover {
     color: #fff;
     background: -moz-linear-gradient(top, #ffcc33 0%, #ff9900);
     background: -webkit-gradient(linear, left top, left bottom, from(#ffcc33), to(#ff9900));

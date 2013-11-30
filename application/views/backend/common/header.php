@@ -19,6 +19,7 @@
 
         <script src="<?= base_url(); ?>js/vendor/jquery.min.js"></script>
         <script src="<?= base_url(); ?>js/vendor/jquery-ui.min.js"></script>
+         <script src="<?= base_url(); ?>js/vendor/underscore-min.js"></script>
         <script src="<?= base_url(); ?>js/vendor/tinymce/tinymce.min.js"></script>
 
         

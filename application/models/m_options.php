@@ -19,9 +19,9 @@ class M_options extends CI_Model {
 		return $query->result_array();
 	}
 
-	public function updateOptions($data) {
+/*	public function updateOptions($data) {
 		$this->db->update('ter_options');
-	}
+	} */
 
 /*================================================================
 	Imágenes
@@ -47,5 +47,20 @@ class M_options extends CI_Model {
 		return $query->result_array();
 
 	}
+
+	public function updateDefaultSizeImg($maxWidth, $maxHeight, $maxWidthThumb, $maxHeightThumb) {
+		
+		$arrayIds = array( 1 => $maxWidthThumb, 2 => $maxHeightThumb, 3 => $maxWidth, 4 => $maxHeight,);
+
+		foreach ( $arrayIds as $clave => $valor ) {
+			$data = array('value' => $valor );
+			$this->db->where('id', $clave);
+			$this->db->update('ter_options', $data);
+		}
+		
+		 
+	}
+
+
 
 }

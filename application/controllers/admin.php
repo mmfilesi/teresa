@@ -387,6 +387,40 @@ class Admin extends CI_Controller {
 
 		}
 
+	} // #optionsUpdateImg
+
+	public function getDefaultSizeImg() {
+
+		$this->config->load('options');
+
+		$maxSizes 		= $this->config->item('image_max_sizes');
+		$maxThumbails 	= $this->config->item('image_max_thumbails');
+		/* Aunque se podría enviar todo en un array directamente, prefiero desglosarlo
+		por escalabilidad */
+		$maxWidth 		= $maxSizes[0];
+		$maxHeight 		= $maxSizes[1];
+		$maxWidthThumb 	= $maxThumbails[0];
+		$maxHeightThumb = $maxThumbails[1];
+		$arraySizes 	= array($maxWidth, $maxHeight, $maxWidthThumb, $maxHeightThumb);
+		echo json_encode( $arraySizes ); 
+
+	} // #getDefaultSizeImg
+
+	public function updateDefaultSizeImg() {
+
+		$this->load->model( 'm_options', 'modOptions' );
+
+		if (isset($_POST) && $_POST) {
+
+			$maxWidth 		= intval( $this->input->post('maxWidth') );
+			$maxHeight 		= intval( $this->input->post('maxHeight') );
+			$maxWidthThumb 	= intval( $this->input->post('maxWidthThumb') );
+			$maxHeightThumb = intval( $this->input->post('maxHeightThumb') );
+			
+			$this->modOptions->updateDefaultSizeImg($maxWidth, $maxHeight, $maxWidthThumb, $maxHeightThumb);
+
+		}
+
 	}
 
 }
