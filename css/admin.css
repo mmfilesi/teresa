@@ -285,6 +285,10 @@ body {
     float:right;
 }
 
+.inline {
+    display:inline;
+}
+
 .inlineBlock {
     display:inline-block;
 }

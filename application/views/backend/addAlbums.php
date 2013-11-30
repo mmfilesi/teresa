@@ -46,7 +46,7 @@
 							<input type="hidden" name="imagenDestacadaSubida" value="<?= $todoAlbum['imagen_destacada']; ?>" /></p>	
 						</div>
 				<?php } else { ?>
-						<p><input type="file" name="imagenDestacada"></p>
+						<p><input type="file" name="imagenDestacada" class="botonBlanco"></p>
 				<?php } ?>
 
 			</div> <!-- #imagen destacada -->
@@ -81,7 +81,7 @@
 				</div>
 
 				<p><br />
-				<input type="text" name="addCategoria" id="addCategoria" class="inputText" /> <button id="js-addCategoria" class="botonMas">+</button>
+				<input type="text" name="addCategoria" id="addCategoria" class="inputText" /> <span id="js-addCategoria" class="botonRedondo">+</span>
 				</p>
 
 			</div> <!-- #categorías -->
@@ -92,7 +92,7 @@
 				<label for="albumTags"><span class="negrita">Etiquetas</span> </label>	<br />
 
 				<input type="text" name="albumTags" id="albumTags" class="inputText" placeholder="separadas por comas"/>
-				<button id="js-addTag" class="botonMas">+</button>
+				<span id="js-addTag" class="botonRedondo">+</span>
 
 				<div id="contenedorTags">
 					<?php if ( $accion == "edit" AND count($todoTagsAlbum) > 0 ) { ?>
@@ -125,7 +125,7 @@
 				<?php } ?>
 			<?php } ?>	
 
-		<button id="js-guardar" class="botonAzul floatRight">guardar</button>
+		<div id="js-guardar" class="botonAzul floatRight">guardar</div>
 
 	</form>
 
