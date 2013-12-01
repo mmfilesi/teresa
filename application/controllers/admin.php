@@ -24,6 +24,7 @@ class Admin extends CI_Controller {
 		No perder el tag seleccionado de categorías.
 		Cambiar proceso álbums
 		Borrar categorías y tags cuando borre el álbum
+		añadir footer personalizado
 	*/
 
 /* =========================================================
@@ -318,6 +319,24 @@ class Admin extends CI_Controller {
 /* =========================================================
 	Imágenes
 ============================================================ */
+
+	public function imagenes() {
+
+		$sidebar['selected'] 	= "imagenes";
+		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
+		$header['breadcrumb']	= "<a href='".base_url()."admin/imagenes'>Imágenes</a>";
+
+		$header['titular'] 		= "Imágenes";
+		$data['todoImagenes']	= $this->modImagenes->getImagenes();
+
+		$footer['tiempo'] 		= $this->benchmark->elapsed_time();
+		$footer['memoria'] 		= $this->benchmark->memory_usage();
+		
+		$this->load->view('backend/common/header', $header);
+		$this->load->view('backend/imagenes', $data);
+		$this->load->view('backend/common/footer', $footer);
+		
+	}
 
 
 	public function addImagen( $idImagen ='add' ) {

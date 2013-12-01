@@ -203,6 +203,13 @@ class M_imagenes extends CI_Model {
 
 	}
 
+	public function getImagenes() {
+		
+		$query = $this->db->get('ter_imagenes');
+
+		return $query->result_array();
+	}
+
 	public function getImagen($idImagen) {
 
 		$this->db->where('id', $idImagen);
