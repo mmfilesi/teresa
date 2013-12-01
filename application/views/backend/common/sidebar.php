@@ -7,7 +7,7 @@
 
         <h5>Imágenes</h5>
             <ul>
-                <li>Subir</li>
+                <li><a href="<?= base_url(); ?>admin/addImagen">Subir</a></li>
                 <li>Editar</li>
             </ul>
 

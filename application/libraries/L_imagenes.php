@@ -164,5 +164,28 @@ class L_imagenes {
 		}
 	} 
 
+	/* Inserta un listado de etiquetas y los asocia con una imagen. 
+		Pendiente: optimizar este proceso para no lanzar tantas queries */
+
+	public function insertTagsImagen($idImagen, $arrayTags) {
+
+		if ( count($arrayTags) > 0 && $arrayTags && $arrayTags != "") {
+
+				foreach ( $arrayTags as $clave ) {
+
+					$idTag = $this->instance->modImagenes->getTagByValue($clave);
+
+					if ( empty($idTag) ) {
+						$idTag = $this->instance->modImagenes->insertTag($clave);
+					} else {
+						$idTag = $idTag['id'];
+					}
+
+					$this->instance->modImagenes->insertTagToImagen($idImagen, $idTag);
+				} 
+		}
+	} 
+
+
 
 }

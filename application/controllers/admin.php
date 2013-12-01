@@ -22,6 +22,8 @@ class Admin extends CI_Controller {
 
 	/* Cosas pendientes 
 		No perder el tag seleccionado de categorías.
+		Cambiar proceso álbums
+		Borrar categorías y tags cuando borre el álbum
 	*/
 
 /* =========================================================
@@ -312,6 +314,185 @@ class Admin extends CI_Controller {
 		}
 
 	}
+
+/* =========================================================
+	Imágenes
+============================================================ */
+
+
+	public function addImagen( $idImagen ='add' ) {
+
+		$sidebar['selected'] 	= "imagenes";
+		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
+
+		if ( $idImagen == 'add') {
+			$header['titular'] 			 = "Subir imágenes";			
+			$header['breadcrumb']		 = "<a href='".base_url()."admin/imagenes'>Imágenes</a> <span class='separador'>&rsaquo;</span> Subir una imagen";
+			$data['accion'] 			 = "add";
+		} else {
+			$header['titular'] 			 = "Editar una imagen";
+			$header['breadcrumb']		 = "<a href='".base_url()."admin/imagenes'>Imágenes</a> <span class='separador'>&rsaquo;</span> Editar una imagen";
+			$data['accion'] 			 = "edit";
+			$data['todoImagen'] 		 = $this->modImagenes->getImagen($idImagen);			
+			$data['todoImagen']['fecha'] = $this->libImagenes->dateUkToSp($data['todoImagen']['fecha']);			
+			$data['todoTagsImagen'] 	 = $this->modImagenes->getTagsToImagen($idImagen);
+		}
+
+		$data['todoAlbums']		= $this->modImagenes->getAlbums();
+
+		$footer['tiempo'] 		= $this->benchmark->elapsed_time();
+		$footer['memoria'] 		= $this->benchmark->memory_usage();
+
+		$this->load->view('backend/common/header', $header);
+		$this->load->view('backend/addImagen', $data);
+		$this->load->view('backend/common/footer', $footer);
+	}
+
+	public function insertImagen() {
+
+		if (isset($_POST) && $_POST) {
+
+			$imagenNombre 		= $this->input->post('imagenNombre');
+			$imagenFecha 		= $this->input->post('imagenFecha');	
+			$imagenLugar 		= $this->input->post('imagenLugar');			
+			$imagenDescripcion 	= $this->input->post('imagenDescripcion');
+			$imagenAlbum 		= $this->input->post('imagenAlbum'); 
+						
+			$imagenTags 		= $this->input->post('imagenTags');
+			$listadoTags 		= $this->input->post('inputTags');
+
+			if ( $imagenNombre == "" ) {
+				$imagenNombre = "Sin título";
+			} 
+
+			if ( $imagenFecha != "" ) {
+				$imagenFecha = $this->libImagenes->dateSpToUk($imagenFecha);
+			}
+
+			if ( $imagenLugar == "" ) {
+				$imagenLugar = "-";
+			}
+
+			$imagenRuta = "pendiente";
+
+			$idImagen = $this->modImagenes->insertImagen($imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta, $imagenAlbum);
+
+			if ( $imagenTags AND $imagenTags !=0 ) {
+				$imagenTags = explode(",", $imagenTags );
+				$this->libImagenes->insertTagsImagen($idImagen, $imagenTags);
+			}			
+			$this->libImagenes->insertTagsImagen($idImagen, $listadoTags);
+
+			$month 			= date('m');
+			$year 			= date('Y');
+			$nombreImagen 	= time();
+
+			$rutaBase = 'images/images/'.$year.'/'.$month.'/';
+
+			if ( isset($_FILES['imagenRuta']['tmp_name']) ) {
+
+				$nombreInput = 'imagenRuta';		
+
+				$envio = $this->libImagenes->uploadImagenes($rutaBase, $nombreImagen, $nombreInput);
+
+				if ( $envio == 1 ) {
+					$extensionImagen = $_FILES['imagenRuta']['name'];
+					$arrayTemporal = explode(".", $extensionImagen);
+					$extensionImagen = end($arrayTemporal);
+
+					$imagenRuta = $nombreImagen.".".$extensionImagen;
+
+					$this->libImagenes->generateThumbails($rutaBase.$imagenRuta);
+
+					$this->libImagenes->resizeImageIfLong($rutaBase.$imagenRuta);
+
+					$imagenRuta = $year.'/'.$month.'/'.$nombreImagen.".".$extensionImagen;					
+
+					$this->modImagenes->updateImagen($idImagen, $imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta, $imagenAlbum);
+
+				} 
+
+			} // #if ( isset($_FILES['imagenDestacada']['tmp_name']) )	
+		
+			redirect ( 'admin/addImagen/'.$idImagen, 'location', 301 );	
+
+		} // #if (isset($_POST) && $_POST)
+
+	} //#insertImagen
+
+	public function updateImagen() {
+
+		if (isset($_POST) && $_POST) {
+
+			$imagenNombre 		= $this->input->post('imagenNombre');
+			$imagenFecha 		= $this->input->post('imagenFecha');	
+			$imagenLugar 		= $this->input->post('imagenLugar');			
+			$imagenDescripcion 	= $this->input->post('imagenDescripcion');
+			$imagenAlbum 		= $this->input->post('imagenAlbum');
+			$imagenRuta 		= $this->input->post('imagenRuta');
+			$idImagen 			= $this->input->post('idImagen');    
+						
+			$imagenTags 		= $this->input->post('imagenTags');
+			$listadoTags 		= $this->input->post('inputTags');
+
+			if ( $imagenNombre == "" ) {
+				$imagenNombre = "Sin título";
+			} 
+
+			if ( $imagenFecha != "" ) {
+				$imagenFecha = $this->libImagenes->dateSpToUk($imagenFecha);
+			}
+
+			if ( $imagenLugar == "" ) {
+				$imagenLugar = "-";
+			}
+
+			$this->modImagenes->deleteTagToImagen($idImagen);
+
+			if ( $imagenTags AND $imagenTags !=0 ) {
+				$imagenTags = explode(",", $imagenTags );
+				$this->libImagenes->insertTagsImagen($idImagen, $imagenTags);
+			}			
+			$this->libImagenes->insertTagsImagen($idImagen, $listadoTags);
+
+
+			$this->modImagenes->updateImagen($idImagen, $imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta, $imagenAlbum);
+
+		
+			redirect ( 'admin/addImagen/'.$idImagen, 'location', 301 );	
+
+		} // #if (isset($_POST) && $_POST)
+
+	} //#insertImagen
+
+	public function deleteImagen() {
+
+		if (isset($_POST) && $_POST) {
+
+			$idImagen = $this->input->post('idImagen');
+
+			if ( !is_numeric($idImagen) ) {
+				die("Error en el envío del formulario");
+			}
+
+			$todoImagen = $this->modImagenes->getImagen($idImagen);
+		
+			$this->modImagenes->deleteImagen($idImagen);
+
+			$this->modImagenes->deleteImagenTags($idImagen);
+
+			$ruta = './images/images/'.$todoImagen['ruta'];
+
+			if ( is_file($ruta) ) {
+				unlink($ruta);
+			}
+
+		}
+
+		redirect ( 'admin/imagenes', 'location', 301 );	
+
+	}
+
 
 /*================================================================
 	Categorías

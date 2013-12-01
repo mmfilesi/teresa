@@ -46,7 +46,7 @@
 							<input type="hidden" name="imagenDestacadaSubida" value="<?= $todoAlbum['imagen_destacada']; ?>" /></p>	
 						</div>
 				<?php } else { ?>
-						<p><input type="file" name="imagenDestacada" class="botonBlanco"></p>
+						<p><input type="file" name="imagenDestacada" class=""></p>
 				<?php } ?>
 
 			</div> <!-- #imagen destacada -->
