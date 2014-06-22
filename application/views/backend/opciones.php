@@ -1,3 +1,4 @@
+	<h3 class="azul_0777eb"><?= $titular; ?></h3>
 	<!-- Generales -->
 	<div id="js-despliegaGenerales" class="botonRedondo floatRight fuente08 js-desplegador">+</div>
 	<h4 class="versalitas fuente11" style="margin-bottom:0.2em;">Generales</h4>

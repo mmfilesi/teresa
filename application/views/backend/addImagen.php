@@ -1,9 +1,3 @@
-	<style>
-		.ui-dialog-title {
-			font-size: 0.8em;
-		}
-	</style>
-
 	<?php $action = ( $accion != "edit" ) ? base_url().'admin/insertImagen' : base_url().'admin/updateImagen'; ?>
 
 	<?php if ( $accion == "edit" ) { ?>
@@ -29,7 +23,7 @@
 				tabindex="1" /></p>
 
 				<p><label for="imagenFecha"><span class="negrita">Fecha</span></label> <br />	
-				<input type="text" name="imagenFecha" id="imagenFecha" class="inputText" 
+				<input type="text" name="imagenFecha" id="imagenFecha" class="inputText fuenteDatePickers" 
 				<?php if ( $accion == "edit" ) { ?>
 					value="<?= $todoImagen['fecha']; ?>"
 				<?php } ?>
@@ -107,7 +101,7 @@
 		<div id="tercerEstrato" class="bordeGrisBottom marginBottom-01">
 
 			<p><span class="negrita">Descripción</span><br />
-			<textarea name="imagenDescripcion" id="imagenDescripcion" class="ancho250 azul_0777eb" tabindex="6"><?php if ( $accion == "edit") { echo $todoImagen['descripcion']; } ?></textarea></p>
+			<textarea name="imagenDescripcion" id="imagenDescripcion" class="ancho250 azul_0777eb" tabindex="6"><?php if ( $accion == "edit") { echo stripslashes($todoImagen['descripcion']); } ?></textarea></p>
 
 		</div>
 

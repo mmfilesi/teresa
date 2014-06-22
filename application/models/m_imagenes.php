@@ -13,26 +13,31 @@ class M_imagenes extends CI_Model {
 =================================================================*/
 
 	public function getAlbums() {
+
 		$this->db->order_by('orden');
 		$this->db->order_by('indexacion');
 		$query = $this->db->get('ter_albums');
 		return $query->result_array();
+
 	}
 
-	public function insertAlbum($albumNombre, $albumFecha, $albumLugar, $albumGoogle, $albumDescripcion, $imagenDestacada) {
+	public function insertAlbum($albumNombre, $albumFecha, $albumLugar, $albumDescripcion, $imagenDestacada) {
+
+		$albumNombre 		= addslashes( strip_tags( $albumNombre ) );
+		$albumFecha	 		= strip_tags( $albumFecha );
+		$albumLugar 		= addslashes( strip_tags( $albumLugar ) );			
+		$albumDescripcion 	= addslashes( strip_tags( $albumDescripcion ) ); 
 
 		$data = array(
-					   'nombre' => $albumNombre,
-					   'fecha' => $albumFecha,
-					   'lugar' => $albumLugar,
-					   'google_maps' => $albumGoogle,
-					   'descripcion' => $albumDescripcion,
-					   'imagen_destacada' => $imagenDestacada,
-					   'orden' => 1
+					   'nombre' 			=> $albumNombre,
+					   'fecha' 				=> $albumFecha,
+					   'lugar' 				=> $albumLugar,
+					   'descripcion' 		=> $albumDescripcion,
+					   'imagen_destacada'	=> $imagenDestacada,
+					   'orden' 				=> 1
 					);
 
-		$query = $this->db->insert('ter_albums', $data);
-
+		$query 	 = $this->db->insert('ter_albums', $data);
 		$idAlbum = $this->db->insert_id(); 
 		return $idAlbum;
 
@@ -47,57 +52,65 @@ class M_imagenes extends CI_Model {
 
 	} //#getAlbum
 
-	public function updateAlbum($idAlbum, $albumNombre, $albumFecha, $albumLugar, $albumGoogle, $albumDescripcion, $imagenDestacada) {
-		
-		$data = array(
-               'nombre' 			=> $albumNombre,
-               'fecha' 				=> $albumFecha,
-               'lugar' 				=> $albumLugar,
-               'google_maps' 		=> $albumGoogle,
-               'descripcion' 		=> $albumDescripcion,
-               'imagen_destacada' 	=> $imagenDestacada,
-            );
+	public function updateAlbum($idAlbum, $albumNombre, $albumFecha, $albumLugar, $albumDescripcion, $imagenDestacada) {
 
-		$this->db->where('id', $idAlbum);
-		$this->db->update('ter_albums', $data);
-		//$sql = $this->db->last_query();
-		//die($sql);
+		if ( is_numeric($idAlbum) ) {
+
+			$albumNombre 		= addslashes( strip_tags( $albumNombre ) );
+			$albumFecha 		= addslashes( strip_tags( $albumFecha ) );		
+			$albumLugar 		= addslashes( strip_tags( $albumLugar ) );
+			$albumDescripcion 	= addslashes( $albumDescripcion );
+			$imagenDestacada 	= addslashes( strip_tags( $imagenDestacada ) );
+			
+			$data = array(
+	               'nombre' 			=> $albumNombre,
+	               'fecha' 				=> $albumFecha,
+	               'lugar' 				=> $albumLugar,
+	               'descripcion' 		=> $albumDescripcion,
+	               'imagen_destacada' 	=> $imagenDestacada,
+	            );
+
+			$this->db->where('id', $idAlbum);
+			$this->db->update('ter_albums', $data);
+
+		} else {
+			die("Error en el envío del formulario");
+		}
 
 	} //#updateAlbum
 
-	public function deleteAlbum($idAlbum) {
-		
-		$this->db->where('id', $idAlbum);
-		$this->db->delete('ter_albums');
-
+	public function deleteAlbum($idAlbum) {		
+		if ( is_numeric($idAlbum) ) {
+			$this->db->where('id', $idAlbum);
+			$this->db->delete('ter_albums');
+		} else {
+			die("Error en el envío del formulario");
+		}
 	}
 
 	public function updateOrdenAlbums($clave, $contador) {
 		$data = array( 'orden' => $contador );
 		$this->db->where('id', $clave);
 		$this->db->update('ter_albums', $data);
-		$sql = $this->db->last_query();
-		//die($sql);
 	}
 
 	public function deleteAlbumCategorias($idAlbum) {
-		
-		$this->db->where('id_album', $idAlbum);
-		$this->db->delete('ter_categorias_on_albums');
-
-	}
-
-	public function deleteAlbumTags($idAlbum) {
-		
-		$this->db->where('id_album', $idAlbum);
-		$this->db->delete('ter_tags_on_albums');
+		if ( is_numeric($idAlbum) ) {
+			$this->db->where('id_album', $idAlbum);
+			$this->db->delete('ter_categorias_on_albums');
+		} else {
+			die("Error en el envío del formulario");
+		}
 
 	}
 
 	public function deleteAlbumImagenes($idAlbum) {
-		
-		$this->db->where('id_album', $idAlbum);
-		$this->db->delete('ter_imagenes_on_albums');
+		if ( is_numeric($idAlbum) ) {
+			$this->db->where('id_album', $idAlbum);
+			$this->db->delete('ter_imagenes_on_albums');
+		} else {
+			die("Error en el envío del formulario");
+		}
 
 	}
 
@@ -326,8 +339,12 @@ class M_imagenes extends CI_Model {
 
 	public function insertCategoriaToAlbum($idAlbum, $idCategoria) {
 
-		$data = array( 'id_album' => $idAlbum, 'id_categoria' => $idCategoria );
-		$query = $this->db->insert('ter_categorias_on_albums', $data);
+		if ( !is_numeric($idAlbum) OR !is_numeric($idCategoria) ) {
+			die("Error en el envío del formulario");
+		} else {
+			$data = array( 'id_album' => $idAlbum, 'id_categoria' => $idCategoria );
+			$query = $this->db->insert('ter_categorias_on_albums', $data);
+		}		
 
 	} //#insertCategoriaToAlbum 
 
@@ -351,15 +368,6 @@ class M_imagenes extends CI_Model {
 
 	} //#getTagByValue
 
-	public function getTagsToAlbum($idAlbum) {
-
-		$query = $this->db->query("SELECT  `ter_tags`.`value` FROM  `ter_tags` 
-									INNER JOIN  `ter_tags_on_albums` ON  `ter_tags_on_albums`.`id_tag` =  `ter_tags`.`id` 
-									WHERE  `ter_tags_on_albums`.`id_album` = ".$idAlbum);
-
-		return $query->result_array();
-
-	} //#getTagsToAlbum
 
 	public function insertTag($value) {
 
@@ -372,29 +380,6 @@ class M_imagenes extends CI_Model {
 		return $idTag;
 
 	} //#insertTag
-
-	public function insertTagToAlbum($idAlbum, $idTag) {
-
-		if ( !is_numeric($idAlbum) OR !is_numeric($idTag) ) {
-			die("Error en el envío del formulario");
-		} else {
-			$data = array('id_album' => $idAlbum, 'id_tag' => $idTag );
-			$query = $this->db->insert('ter_tags_on_albums', $data);
-		}
-
-	} //#insertTagToAlbum
-
-
-	public function deleteTagToAlbum($idAlbum) {
-
-		if ( !is_numeric($idAlbum) ) {
-			die("Error en el envío del formulario");
-		} else {
-			$this->db->where('id_album', $idAlbum);
-			$this->db->delete('ter_tags_on_albums');
-		}
-
-	} //#insertTagToAlbum
 
 
 	public function getTagsToImagen($idImagen) {

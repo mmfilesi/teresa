@@ -1,153 +1,10 @@
 <script src="<?=base_url()?>js/vendor/datatable/jquery.dataTables.min.js"></script> 
+<link rel="stylesheet" href="<?= base_url(); ?>css/datatable.css">
 
-<style>
-
-/* ==========================================================================
-   Datatable
-   ========================================================================== */
-
-	.dataTables_wrapper {
-	    background-color: #f1f1f1;
-	    border-top: 1px solid #e9eaea;
-	    border-left: 1px solid #e9eaea;
-	    border-bottom: 1px solid #d8d6d6;
-	    border-right: 1px solid #d8d6d6;
-	    border-radius: 5px;
-	    overflow: hidden;
-	    width:100%;
-	    padding: 0.2em;
-	}
-
-	.dataTables_length {
-	    float:left;
-	    font-size: 0.8em;
-	    padding: 6px;
-	}
-
-	.dataTables_filter {            
-	    font-size: 0.8em;
-	    float:right;
-	    padding: 6px;
-	}
-
-	.dataTables_info {
-	    float:left;
-	    font-size: 0.8em;
-	    padding: 10px;
-	}
-
-	.dataTables_paginate {
-	    font-size: 0.8em;
-	    float:right;
-	    padding: 10px;
-	}
-
-
-	.tablasDataTable {
-	    margin-top: 0.2em;
-	}
-
-	.listadoTablas {
-	   width:100%;
-	}
-
-	.listadoTablas th {
-	    padding:0.4em;
-	    border-bottom: 1px solid #999;
-	    border-top: 1px solid #999;         
-	    background-color: #e2e2e2;
-	    font-size: 0.85em;
-	    color:#333;
-	}
-
-	.listadoTablas td {
-	    padding:0.4em;
-	    border-bottom: 1px solid #ededed;
-	    font-size: 0.8em;           
-	}
-
-	.listadoTablas tr:nth-child(even) {
-	    background: #f8f8f8;
-	}
-
-	.listadoTablas tr:nth-child(odd) {
-	    background: #fff;
-	}
-
-	.listadoTablas tr:hover {
-	    background: #ffcc33;
-	}
-
-	/* Two button pagination - previous / next */
-	.paginate_disabled_previous,
-	.paginate_enabled_previous,
-	.paginate_disabled_next,
-	.paginate_enabled_next {
-	    height: 19px;
-	    float: left;
-	    cursor: pointer;
-	    *cursor: hand;
-	    color: #111 !important;
-	}
-	.paginate_disabled_previous:hover,
-	.paginate_enabled_previous:hover,
-	.paginate_disabled_next:hover,
-	.paginate_enabled_next:hover {
-	    text-decoration: none !important;
-	}
-	.paginate_disabled_previous:active,
-	.paginate_enabled_previous:active,
-	.paginate_disabled_next:active,
-	.paginate_enabled_next:active {
-	    outline: none;
-	}
-
-	.paginate_disabled_previous,
-	.paginate_disabled_next {
-	    color: #666 !important;
-	}
-	.paginate_disabled_previous,
-	.paginate_enabled_previous {
-	    padding-left: 23px;
-	}
-	.paginate_disabled_next,
-	.paginate_enabled_next {
-	    padding-right: 23px;
-	    margin-left: 10px;
-	}
-
-	.paginate_enabled_previous { background: url('<?=base_url()?>/css/images/back_enabled.png') no-repeat top left; }
-	.paginate_enabled_previous:hover { background: url('<?=base_url()?>/css/images/back_enabled_hover.png') no-repeat top left; }
-	.paginate_disabled_previous { background: url('<?=base_url()?>/css/images/back_disabled.png') no-repeat top left; }
-
-	.paginate_enabled_next { background: url('<?=base_url()?>/css/images/forward_enabled.png') no-repeat top right; }
-	.paginate_enabled_next:hover { background: url('<?=base_url()?>/css/images/forward_enabled_hover.png') no-repeat top right; }
-	.paginate_disabled_next { background: url('<?=base_url()?>/css/images/forward_disabled.png') no-repeat top right; }
-
-
-	.sorting_asc {
-	    background: url('<?=base_url()?>/css/images/sort_asc.png') no-repeat center right;
-	}
-
-	.sorting_desc {
-	    background: url('<?=base_url()?>/css/images/sort_desc.png') no-repeat center right;
-	}
-
-	.sorting {
-	    background: url('<?=base_url()?>/css/images/sort_both.png') no-repeat center right;
-	}
-
-	.sorting_asc_disabled {
-	    background: url('<?=base_url()?>/css/images/sort_asc_disabled.png') no-repeat center right;
-	}
-
-	.sorting_desc_disabled {
-	    background: url('<?=base_url()?>/css/images/sort_desc_disabled.png') no-repeat center right;
-	}
-
-</style>
+	<h3 class="azul_0777eb"><?= $titular; ?></h3>
 
 	<table class="listadoTablas tablasDataTable" id="tablaAlbumes">
+
 		<thead>
 			<tr>
 				<th></th>
@@ -157,6 +14,7 @@
 				<th>Borrar</th>
 			</tr>
 		</thead>
+		
 		<tbody>
 		<?php foreach ( $todoAlbums as $clave ) { ?>
 		<tr id="js-fila_<?= $clave['id']; ?>">
@@ -191,15 +49,18 @@
 
 	</table>
 
-
-
 <!-- Dialogs -->
-<div id="dialog-borrar" class="dialogos" title="Borrar álbum" style="display:none;s">
-	Atención, esta acción es irreversible. Se borrará el álbum <span id="js-nombreAlbum" class="negrita"></span>,
-	aunque <span class="negrita">no</span> se borrarán sus imágenes asociadas.
+<div id="dialog-borrar" class="dialogos" title="Borrar álbum" style="display:none;">
+	<div class="bordeGrisBottom marginBottom-01" style="padding-bottom:1em;">
+		Atención, esta acción es irreversible. Se borrará el álbum <span id="js-nombreAlbum" class="negrita"></span>,
+		aunque <span class="negrita">no</span> se borrarán sus imágenes asociadas.
+	</div>
+	<div class="textoRight">
+		<span id="js-cancelarDialog" class="botonRojo" style="margin-right:10px;">cancelar</span>
+		<span id="js-borrarDialog" class="botonAzul" id="">borrar</span>
+		<span id="js-idBorrar" style="display:none;"></span>
+	</div>
 </div>
-
-
 
 <script>
 (function(window, undefined){
@@ -210,31 +71,33 @@
 
 			var id = $(this).attr('id');
 			id = id.replace("js-borrar_","");
+			$( "#js-idBorrar" ).text(id);
 
 			var nombre = "#js-nombre_"+id;
 			nombre = $(nombre).text();
-			$("#js-nombreAlbum").text(nombre);
+			$( "#js-nombreAlbum" ).text(nombre);
 
 			$( "#dialog-borrar" ).dialog({
 			    resizable: false,
-			    height:250,
-			    modal: true,
-			    buttons: {
-			        "Borrar álbum": function() {
-			          $( this ).dialog( "close" );
-			          var data = {};
-			          data = {'id':id};
-			          $.post("<?= base_url(); ?>admin/deleteAlbum", data).done(function() {
-			          	id = "#js-fila_"+id;
-			          	$(id).remove();
-			          });
-			        },
-			        Cancelar: function() {
-			          $( this ).dialog( "close" );
-			        }
-		      	}
-		    });  			
+			    height:200,
+			    modal: true
+		    });
 
+		});
+
+	    $('#js-cancelarDialog').click(function() {
+		    $( "#dialog-borrar" ).dialog( "close" );
+	    });
+
+		$('#js-borrarDialog').click(function() {
+		    $( "#dialog-borrar" ).dialog( "close" );
+		    var id = $( "#js-idBorrar" ).text();
+		    var data = {};
+	        data = {'id':id};
+	        $.post("<?= base_url(); ?>admin/deleteAlbum", data).done(function() {
+	        	id = "#js-fila_"+id;
+	          	$(id).remove();
+	         });
 		});
 
 		$('#tablaAlbumes').dataTable( {

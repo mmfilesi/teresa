@@ -6,6 +6,8 @@
 	    width: 200px; 
 	}
 </style>
+		
+		<h3 class="azul_0777eb"><?= $titular; ?></h3>
 
 		<?php $contador = 1; ?>	
 		<div id="js-sortable" class="layoutMiniaturaContenedor">

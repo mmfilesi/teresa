@@ -1,6 +1,8 @@
 	<?php $action = ( $accion != "edit" ) ? base_url().'admin/insertAlbum' : base_url().'admin/updateAlbum'; ?>
 
-	<form action="<?= $action; ?>" method="post"  enctype="multipart/form-data" class="fuente08">
+	<h3 class="azul_0777eb"><?= $titular; ?></h3>
+
+	<form id="formularioAlbum" action="<?= $action; ?>" method="post"  enctype="multipart/form-data" class="fuente08">
 
 		<div id="primerEstrato" class="bordeGrisBottom marginBottom-01">
 
@@ -14,7 +16,7 @@
 				/></p>
 
 				<p><label for="albumFecha"><span class="negrita">Fecha</span></label> <br />	
-				<input type="text" name="albumFecha" id="albumFecha" class="inputText" 
+				<input type="text" name="albumFecha" id="albumFecha" class="inputText fuenteDatePickers" 
 				<?php if ( $accion == "edit" ) { ?>
 					value="<?= $todoAlbum['fecha']; ?>"
 				<?php } ?>
@@ -26,12 +28,6 @@
 					value="<?= $todoAlbum['lugar']; ?>"
 				<?php } ?>
 				/></p>
-
-				<p><input type="checkbox" name="albumGoogle" id="albumGoogle" value="1" class="azul_0777eb" 
-				<?php if ( $accion == "edit" AND $todoAlbum['google_maps'] == 1 ) { ?>
-					checked
-				<?php } ?>
-				/><label for="albumGoogle"> Mostrar en google Maps</label></p>
 
 			</div><!-- #datos básicos -->
 
@@ -56,11 +52,9 @@
 		<div id="segundoEstrato" class="bordeGrisBottom marginBottom-01">
 
 		<!-- categorías -->
-			<div class="inlineBlock ancho50c verticalTop">
-
-				<span class="negrita">Categorías</span> 
-
-				<div id="contenedorCategorias" class="caja">
+			<div class="inlineBlock ancho50c verticalTop" style="height:175px;">
+				<span class="negrita">Categorías</span>
+				<div id="contenedorCategorias" class="caja barraAzul">
 					<?php if ( $todoCategorias AND count($todoCategorias) > 0 ) { ?>
 
 						<?php foreach ( $todoCategorias as $clave ) { ?>
@@ -78,52 +72,26 @@
 							<?= $clave['value']; ?> <br />
 					<?php } ?>
 				<?php } ?>
-				</div>
+				</div>				
+			</div>	
 
-				<p><br />
-				<input type="text" name="addCategoria" id="addCategoria" class="inputText" /> <span id="js-addCategoria" class="botonRedondo">+</span>
-				</p>
-
-			</div> <!-- #categorías -->
-
-			 <!-- tags -->
 			<div class="inlineBlock ancho50c verticalTop">
+				<input type="text" name="addCategoria" id="addCategoria" class="inputText" placeholder="Añadir categoría" /> <span id="js-addCategoria" class="botonRedondo">+</span>
+			</div> 
 
-				<label for="albumTags"><span class="negrita">Etiquetas</span> </label>	<br />
-
-				<input type="text" name="albumTags" id="albumTags" class="inputText" placeholder="separadas por comas"/>
-				<span id="js-addTag" class="botonRedondo">+</span>
-
-				<div id="contenedorTags">
-					<?php if ( $accion == "edit" AND count($todoTagsAlbum) > 0 ) { ?>
-						<?php $contador = 0; ?>
-						<?php foreach ( $todoTagsAlbum as $clave ) { ?>
-							<span id='js-tag-<?= $contador; ?>' class='listadoTags'>&otimes; <?= $clave['value']; ?></span>
-							<?php $contador++; ?>
-						<?php } ?>
-					<?php } ?>
-				</div>
-			</div><!-- #tags -->	
 
 		</div>
 
 		<div id="tercerEstrato" class="bordeGrisBottom marginBottom-01">
 
 			<p><span class="negrita">Descripción</span><br />
-			<textarea name="albumDescripcion" id="albumDescripcion" class="ancho250 azul_0777eb"><?php if ( $accion == "edit") { echo $todoAlbum['descripcion']; } ?></textarea></p>
+			<textarea name="albumDescripcion" id="albumDescripcion" class="ancho250 azul_0777eb"><?php if ( $accion == "edit") { echo stripslashes($todoAlbum['descripcion']); } ?></textarea></p>
 
 		</div>
 
 		<?php if ( $accion == "edit" ) { ?>
 			<input type="hidden" name="idAlbum" id="idAlbum" value="<?= $todoAlbum['id']; ?>" />
 		<?php } ?>
-		<?php if ( $accion == "edit" AND count($todoTagsAlbum) > 0 ) { ?>
-				<?php $contador = 0; ?>
-				<?php foreach ( $todoTagsAlbum as $clave ) { ?>
-					<input type='hidden' id='input-tag-<?= $contador; ?>' name='inputTags[<?= $contador; ?>]' value='<?= $clave['value']; ?>' />
-				<?php $contador++; ?>
-				<?php } ?>
-			<?php } ?>	
 
 		<div id="js-guardar" class="botonAzul floatRight">guardar</div>
 
@@ -149,7 +117,6 @@
 			$("#contenedorImagenFichaMP").html(cadena); 
 		});
 
-		//
 
 		$(function() {
 		    $( "#albumFecha" ).datepicker({
@@ -221,38 +188,29 @@
 			$('#js-contenedorImagenDestacada').html(cadena);
 		});
 
-		$("#js-addTag").click(function(event) {
+		$("#js-guardar").click(function(event) {
 
 			event.preventDefault();
+			var check = 0;
+			var temporal;
+			var cadena = "<div class='roja_dd0909 negrita'>El texto es demasiado largo</div>";
+			var imagenCheck = $('#imagenDestacada').val();
+			
+			var inputsCheck = ['#albumNombre','#albumLugar'];
 
-			var cadena = "";
-			var cadena2 = "";
-			var arrayTags = $("#albumTags").val();
-			var tagsYaListados = $(".listadoTags").length;
-			var contador;
-
-			arrayTags = arrayTags.split(",");
-
-			for ( var i=0; i < arrayTags.length; i++ ) {
-				contador = i+tagsYaListados;
-				cadena += "<span id='js-tag-"+contador+"' class='listadoTags'>&otimes; "+arrayTags[i]+"</span>";
-				cadena2 = "<input type='hidden' id='input-tag-"+contador+"' name='inputTags["+contador+"]' value='"+arrayTags[i]+"' />";
-				$("#js-guardar").before(cadena2);
+			for ( var i=0; i< inputsCheck.length; i++ ) {
+				temporal = $(inputsCheck[i]).val();
+				if ( temporal.length > 250 ) {
+					$(inputsCheck[i]).after(cadena);
+					check = 1;
+				}
 			}
 
-			$("#contenedorTags").prepend(cadena);
-			$("#albumTags").val("");
+			if ( check == 0 ) {
+				$("#formularioAlbum").submit();
+			}
 
-		});
-
-		$("#contenedorTags").on("click",".listadoTags", function() {
-			var id = $(this).attr('id');
-			id = id.replace("js-tag-", "");
-			id = "#input-tag-"+id;
-			$(id).remove();
-			$(this).remove();
-		});
-
+		});	
 
 	});
 

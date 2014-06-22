@@ -36,7 +36,7 @@ class Admin extends CI_Controller {
 
 	public function albumes() {
 
-		$sidebar['selected'] 	= "albumes";
+		$sidebar['selected'] 	= "editarAlbumes";
 		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
 		$header['breadcrumb']	= "<a href='".base_url()."admin/albumes'>Álbumes</a>";
 
@@ -55,7 +55,11 @@ class Admin extends CI_Controller {
 
 	public function addAlbum( $idAlbum ='add' ) {
 
-		$sidebar['selected'] 	= "albumes";
+		if ( $idAlbum == 'add') {
+			$sidebar['selected'] 	= "crearAlbum";
+		} else {
+			$sidebar['selected'] 	= "editarAlbum";
+		} 
 		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
 
 		if ( $idAlbum == 'add') {
@@ -69,7 +73,6 @@ class Admin extends CI_Controller {
 			$data['todoAlbum'] 			 = $this->modImagenes->getAlbum($idAlbum);			
 			$data['todoAlbum']['fecha']	 = $this->libImagenes->dateUkToSp($data['todoAlbum']['fecha']);
 			$data['todoCategoriasAlbum'] = $this->modImagenes->getCategoriaToAlbum($idAlbum);
-			$data['todoTagsAlbum'] 		 = $this->modImagenes->getTagsToAlbum($idAlbum);
 		}
 
 		$data['todoCategorias'] 		 = $this->modImagenes->getCategorias();
@@ -86,17 +89,12 @@ class Admin extends CI_Controller {
 
 		if (isset($_POST) && $_POST) {
 
-			$albumNombre 		= addslashes( strip_tags($this->input->post('albumNombre') ) );
-			$albumFecha 		= strip_tags( $this->input->post('albumFecha') );	
-			$albumLugar 		= addslashes( strip_tags($this->input->post('albumLugar') ) );
-			$albumGoogle 		= addslashes( strip_tags($this->input->post('albumGoogle') ) );
-			$albumDescripcion 	= addslashes( $this->input->post('albumDescripcion') ); 
+			$albumNombre 		= $this->input->post('albumNombre');
+			$albumFecha 		= $this->input->post('albumFecha');	
+			$albumLugar 		= $this->input->post('albumLugar');			
+			$albumDescripcion 	= $this->input->post('albumDescripcion'); 
 			$albumCategorias	= $this->input->post('albumCategorias');
 			
-			/* Recogemos dos fuentes de los tags por si no le dieron al botón añadir */
-			$albumTags 			= addslashes( strip_tags($this->input->post('albumTags') ) );
-			$listadoTags 		= $this->input->post('inputTags');
-
 			if ( $albumNombre == "" ) {
 				$albumNombre = "Sin título";
 			} 
@@ -109,26 +107,15 @@ class Admin extends CI_Controller {
 				$albumLugar = "-";
 			}
 
-			if ( $albumGoogle != 1 ) {
-				$albumGoogle = 0;
-			}
-
 			$imagenDestacada = "pendiente";
 
-			$idAlbum = $this->modImagenes->insertAlbum($albumNombre, $albumFecha, $albumLugar, $albumGoogle, $albumDescripcion, $imagenDestacada);
+			$idAlbum = $this->modImagenes->insertAlbum($albumNombre, $albumFecha, $albumLugar, $albumDescripcion, $imagenDestacada);
 
 			if ( count($albumCategorias) > 0 && $albumCategorias != "" ) {
 				foreach ( $albumCategorias as $clave ) {
 					$this->modImagenes->insertCategoriaToAlbum($idAlbum, $clave);
 				} 
 			} 			
-		
-			if ( $albumTags AND $albumTags !=0 ) {
-				$albumTags = explode(",", $albumTags );
-				$this->libImagenes->insertTagsAlbum($idAlbum, $albumTags);
-			}			
-			$this->libImagenes->insertTagsAlbum($idAlbum, $listadoTags);
-
 
 			$rutaBase = 'images/albums/'.$idAlbum.'/';
 
@@ -152,7 +139,7 @@ class Admin extends CI_Controller {
 					// Sacada la miniatura, redimensionamos la imagen si sobrepasa un ancho o alto máximo
 					$this->libImagenes->resizeImageIfLong($rutaBase.$imagenDestacada);					
 
-					$this->modImagenes->updateAlbum($idAlbum, $albumNombre, $albumFecha, $albumLugar, $albumGoogle, $albumDescripcion, $imagenDestacada);
+					$this->modImagenes->updateAlbum($idAlbum, $albumNombre, $albumFecha, $albumLugar, $albumDescripcion, $imagenDestacada);
 
 				} 
 
@@ -167,18 +154,14 @@ class Admin extends CI_Controller {
 	public function updateAlbum() {
 
 		if (isset($_POST) && $_POST) {
-
 			
-			$idAlbum				= addslashes( strip_tags($this->input->post('idAlbum') ) );
-			$albumNombre 			= addslashes( strip_tags($this->input->post('albumNombre') ) );
-			$albumFecha 			= strip_tags( $this->input->post('albumFecha') );		
-			$albumLugar 			= addslashes( strip_tags($this->input->post('albumLugar') ) );
-			$albumGoogle 			= addslashes( strip_tags($this->input->post('albumGoogle') ) );
-			$albumDescripcion 		= addslashes( $this->input->post('albumDescripcion') );
+			$idAlbum				= $this->input->post('idAlbum');
+			$albumNombre 			= $this->input->post('albumNombre');
+			$albumFecha 			= $this->input->post('albumFecha');		
+			$albumLugar 			= $this->input->post('albumLugar');
+			$albumDescripcion 		= $this->input->post('albumDescripcion');
 			$albumCategorias		= $this->input->post('albumCategorias');
-			$albumTags 				= addslashes( strip_tags($this->input->post('albumTags') ) );
-			$listadoTags 			= $this->input->post('inputTags');
-			$imagenDestacadaSubida 	= addslashes( strip_tags($this->input->post('imagenDestacadaSubida') ) );
+			$imagenDestacadaSubida 	= $this->input->post('imagenDestacadaSubida');
 
 			if ( $albumNombre == "" ) {
 				$albumNombre = "Sin título";
@@ -205,16 +188,6 @@ class Admin extends CI_Controller {
 				} 
 			} 
 
-			// Ídem con los tags: Primero, los borramos
-			$this->modImagenes->deleteTagToAlbum($idAlbum);
-			// y ya con el resto
-			if ( $albumTags != "" ) {
-				$albumTags = explode(",", $albumTags );
-				$this->libImagenes->insertTagsAlbum($idAlbum, $albumTags);
-			}
-			if ( count( $listadoTags) > 0 ) {			
-				$this->libImagenes->insertTagsAlbum($idAlbum, $listadoTags);			
-			}
 			/* Si no existe ya alguna imagen, ponemos en marcha el proceso */
 
 			if ( isset($imagenDestacadaSubida) AND $imagenDestacadaSubida != "" ) {
@@ -253,7 +226,7 @@ class Admin extends CI_Controller {
 			}
 
 
-			$this->modImagenes->updateAlbum($idAlbum, $albumNombre, $albumFecha, $albumLugar, $albumGoogle, $albumDescripcion, $imagenDestacada);
+			$this->modImagenes->updateAlbum($idAlbum, $albumNombre, $albumFecha, $albumLugar, $albumDescripcion, $imagenDestacada);
 
 			redirect ( 'admin/addAlbum/'.$idAlbum, 'location', 301 );	
 
@@ -291,8 +264,8 @@ class Admin extends CI_Controller {
 		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
 		$header['breadcrumb']	= "<a href='".base_url()."admin/albumes'>Álbumes</a> <span class='separador'>&rsaquo;</span> Ordenar";
 
-		$header['titular'] 		= "Ordenar álbumes";
-		$data['todoAlbums']		= $this->modImagenes->getAlbums();
+		$data['titular'] 		= "Ordenar álbumes";
+		$data['todoAlbums']		= $this->modImagenes->getAlbums();		
 
 		$footer['tiempo'] 		= $this->benchmark->elapsed_time();
 		$footer['memoria'] 		= $this->benchmark->memory_usage();
