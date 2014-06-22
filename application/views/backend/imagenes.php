@@ -1,162 +1,14 @@
 <script src="<?=base_url()?>js/vendor/datatable/jquery.dataTables.min.js"></script> 
+<link rel="stylesheet" href="<?= base_url(); ?>css/datatable.css">
 
-<style>
-
-/* ==========================================================================
-   Datatable
-   ========================================================================== */
-
-	.dataTables_wrapper {
-	    background-color: #f1f1f1;
-	    border-top: 1px solid #e9eaea;
-	    border-left: 1px solid #e9eaea;
-	    border-bottom: 1px solid #d8d6d6;
-	    border-right: 1px solid #d8d6d6;
-	    border-radius: 5px;
-	    overflow: hidden;
-	    width:100%;
-	    padding: 0.2em;
-	}
-
-	.dataTables_length {
-	    float:left;
-	    font-size: 0.8em;
-	    padding: 6px;
-	}
-
-	.dataTables_filter {            
-	    font-size: 0.8em;
-	    float:right;
-	    padding: 6px;
-	}
-
-	.dataTables_info {
-	    float:left;
-	    font-size: 0.8em;
-	    padding: 10px;
-	}
-
-	.dataTables_paginate {
-	    font-size: 0.8em;
-	    float:right;
-	    padding: 10px;
-	}
-
-
-	.tablasDataTable {
-	    margin-top: 0.2em;
-	}
-
-	.listadoTablas {
-	   width:100%;
-	}
-
-	.listadoTablas th {
-	    padding:0.4em;
-	    border-bottom: 1px solid #999;
-	    border-top: 1px solid #999;         
-	    background-color: #e2e2e2;
-	    font-size: 0.85em;
-	    color:#333;
-	}
-
-	.listadoTablas td {
-	    padding:0.4em;
-	    border-bottom: 1px solid #ededed;
-	    font-size: 0.8em;           
-	}
-
-	.listadoTablas tr:nth-child(even) {
-	    background: #f8f8f8;
-	}
-
-	.listadoTablas tr:nth-child(odd) {
-	    background: #fff;
-	}
-
-	.listadoTablas tr:hover {
-	    background: #ffcc33;
-	}
-
-	/* Two button pagination - previous / next */
-	.paginate_disabled_previous,
-	.paginate_enabled_previous,
-	.paginate_disabled_next,
-	.paginate_enabled_next {
-	    height: 19px;
-	    float: left;
-	    cursor: pointer;
-	    *cursor: hand;
-	    color: #111 !important;
-	}
-	.paginate_disabled_previous:hover,
-	.paginate_enabled_previous:hover,
-	.paginate_disabled_next:hover,
-	.paginate_enabled_next:hover {
-	    text-decoration: none !important;
-	}
-	.paginate_disabled_previous:active,
-	.paginate_enabled_previous:active,
-	.paginate_disabled_next:active,
-	.paginate_enabled_next:active {
-	    outline: none;
-	}
-
-	.paginate_disabled_previous,
-	.paginate_disabled_next {
-	    color: #666 !important;
-	}
-	.paginate_disabled_previous,
-	.paginate_enabled_previous {
-	    padding-left: 23px;
-	}
-	.paginate_disabled_next,
-	.paginate_enabled_next {
-	    padding-right: 23px;
-	    margin-left: 10px;
-	}
-
-	.paginate_enabled_previous { background: url('<?=base_url()?>/css/images/back_enabled.png') no-repeat top left; }
-	.paginate_enabled_previous:hover { background: url('<?=base_url()?>/css/images/back_enabled_hover.png') no-repeat top left; }
-	.paginate_disabled_previous { background: url('<?=base_url()?>/css/images/back_disabled.png') no-repeat top left; }
-
-	.paginate_enabled_next { background: url('<?=base_url()?>/css/images/forward_enabled.png') no-repeat top right; }
-	.paginate_enabled_next:hover { background: url('<?=base_url()?>/css/images/forward_enabled_hover.png') no-repeat top right; }
-	.paginate_disabled_next { background: url('<?=base_url()?>/css/images/forward_disabled.png') no-repeat top right; }
-
-
-	.sorting_asc {
-	    background: url('<?=base_url()?>/css/images/sort_asc.png') no-repeat center right;
-	}
-
-	.sorting_desc {
-	    background: url('<?=base_url()?>/css/images/sort_desc.png') no-repeat center right;
-	}
-
-	.sorting {
-	    background: url('<?=base_url()?>/css/images/sort_both.png') no-repeat center right;
-	}
-
-	.sorting_asc_disabled {
-	    background: url('<?=base_url()?>/css/images/sort_asc_disabled.png') no-repeat center right;
-	}
-
-	.sorting_desc_disabled {
-	    background: url('<?=base_url()?>/css/images/sort_desc_disabled.png') no-repeat center right;
-	}
-
-
-	.ui-dialog-title {
-		font-size: 0.8em;
-	}
-
-</style>
+	<h3 class="azul_0777eb"><?= $titular; ?></h3>
 
 	<table class="listadoTablas tablasDataTable" id="tablaImagenes">
 		<thead>
 			<tr>
 				<th></th>
-				<th class="textoLeft cursorPointer">Álbum</th>
+				<th class="textoLeft cursorPointer">Publicada</th>
+				<th class="textoLeft cursorPointer">Nombre</th>
 				<th>Editar</th>
 				<th>Borrar</th>
 			</tr>
@@ -167,6 +19,9 @@
 
 			<?php $miniatura = base_url()."/../images/images/".$clave['ruta']; ?>
 			<td class="ancho50 textoCentrado"><img src="<?= $miniatura; ?>" width="50" height="25" /></td>
+
+			<td class="fuente085" style="width:160px;"><?= $clave['indexacion']; ?></td>
+
 			<td id="js-nombre_<?= $clave['id']; ?>" class="fuente085"><?= $clave['nombre']; ?></td>
 
 			<td class="ancho50 textoCentrado">

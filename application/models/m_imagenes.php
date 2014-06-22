@@ -101,11 +101,59 @@ class M_imagenes extends CI_Model {
 
 	}
 
+	/* OJO: ESTA ESTÁ MAL, SON TAGS */
+
+	public function getImagenesAlbums($idAlbum) {
+		
+		$query = $this->db->query("SELECT  `ter_tags`.`value` FROM  `ter_tags` 
+									INNER JOIN  `ter_tags_on_albums` ON  `ter_tags_on_albums`.`id_tag` =  `ter_tags`.`id` 
+									WHERE  `ter_tags_on_albums`.`id_album` = ".$idAlbum);
+
+		return $query->result_array();
+	}
+
+	public function getLastOrdenImagen($imagenAlbum) {
+
+		if ( is_numeric($imagenAlbum) ) {
+
+			$this->db->order_by("orden", "desc");
+			$this->db->limit(1);
+			$this->db->where('id_album', $imagenAlbum);
+			$query = $this->db->get('ter_imagenes_on_albums');
+
+			$temporal = $query->row_array();
+
+			return $temporal['orden'];
+		
+		} else {			
+			die("Error en el envío del formulario");
+		}
+	}
+
+	public function insertImagenOnAlbum($idAlbum, $idImagen, $orden) {
+
+		if ( is_numeric($idAlbum) && is_numeric($idImagen) && is_numeric($orden) ) {
+
+			$data = array(
+					   'id_album' 	 => $idAlbum,
+					   'id_imagen' 	 => $idImagen,
+					   'orden' 		 => $orden
+					);
+
+		$query = $this->db->insert('ter_imagenes_on_albums', $data);
+
+		} else {			
+			die("Error en el envío del formulario");
+		}
+		
+
+	}
+
 /*================================================================
 	Imágenes
 =================================================================*/
 
-	public function insertImagen($imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta, $imagenAlbum) {
+	public function insertImagen($imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta) {
 
 		if ( strlen($imagenNombre) > 249 OR strlen($imagenNombre) == 0 ) {
 			die("Error en el envío del formulario");
@@ -133,17 +181,12 @@ class M_imagenes extends CI_Model {
 			$imagenRuta = addslashes( strip_tags($imagenRuta) );
 		}
 
-		if ( !is_numeric($imagenAlbum) ) {
-			die("Error en el envío del formulario");
-		}
-
 		$data = array(
 					   'nombre' 	 => $imagenNombre,
 					   'fecha' 		 => $imagenFecha,
 					   'lugar' 		 => $imagenLugar,
 					   'descripcion' => $imagenDescripcion,
-					   'ruta' 		 => $imagenRuta,
-					   'id_album'	 => $imagenAlbum
+					   'ruta' 		 => $imagenRuta
 					);
 
 		$query = $this->db->insert('ter_imagenes', $data);
@@ -153,7 +196,7 @@ class M_imagenes extends CI_Model {
 		
 	} #insertImagen
 			
-	public function updateImagen($idImagen, $imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta, $imagenAlbum) {
+	public function updateImagen($idImagen, $imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta) {
 
 		if ( !is_numeric($idImagen) ) {
 			die("Error en el envío del formulario");
@@ -185,17 +228,12 @@ class M_imagenes extends CI_Model {
 			$imagenRuta = addslashes( strip_tags($imagenRuta) );
 		}
 
-		if ( !is_numeric($imagenAlbum) ) {
-			die("Error en el envío del formulario");
-		}
-
 		$data = array(
 			   'nombre' 	 => $imagenNombre,
 			   'fecha' 		 => $imagenFecha,
 			   'lugar' 		 => $imagenLugar,
 			   'descripcion' => $imagenDescripcion,
-			   'ruta' 		 => $imagenRuta,
-				'id_album'	 => $imagenAlbum
+			   'ruta' 		 => $imagenRuta
 			);
 
 		$this->db->where('id', $idImagen);
@@ -203,32 +241,53 @@ class M_imagenes extends CI_Model {
 
 	}
 
-	public function getImagenes() {
-		
+	public function getImagenes() {		
 		$query = $this->db->get('ter_imagenes');
-
 		return $query->result_array();
 	}
 
 	public function getImagen($idImagen) {
 
-		$this->db->where('id', $idImagen);
-		$query = $this->db->get('ter_imagenes');
+		if ( !is_numeric($idImagen) ) {
+			die("Error en el envío del formulario");
+		} else {
+			$this->db->where('id', $idImagen);
+			$query = $this->db->get('ter_imagenes');
+			return $query->row_array();
+		}
 
-		return $query->row_array();
 	}
 
 	public function deleteImagen($idImagen) {
 
-		$this->db->where('id', $idImagen);
-		$query = $this->db->delete('ter_imagenes');
+		if ( !is_numeric($idImagen) ) {
+			die("Error en el envío del formulario");
+		} else {
+			$this->db->where('id', $idImagen);
+			$query = $this->db->delete('ter_imagenes');
+		}
 
 	}
 
-	public function deleteImagenTags($idImagen) {
-		
+	public function getAlbumsToImagen($idImagen) {
 		$this->db->where('id_imagen', $idImagen);
-		$query = $this->db->delete('ter_tags_on_imagenes');
+		$query = $this->db->get('ter_imagenes_on_albums');
+		return $query->result_array();
+	}
+
+	public function deleteAlbumToImagen($idImagen) {
+		$this->db->where('id_imagen', $idImagen);
+		$query = $this->db->delete('ter_imagenes_on_albums');
+	}
+
+	public function deleteImagenTags($idImagen) {
+
+		if ( !is_numeric($idImagen) ) {
+			die("Error en el envío del formulario");
+		} else {		
+			$this->db->where('id_imagen', $idImagen);
+			$query = $this->db->delete('ter_tags_on_imagenes');
+		}
 		
 	}
 

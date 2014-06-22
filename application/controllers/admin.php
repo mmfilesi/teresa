@@ -25,6 +25,9 @@ class Admin extends CI_Controller {
 		Cambiar proceso álbums
 		Borrar categorías y tags cuando borre el álbum
 		añadir footer personalizado
+		ver función modelo 104
+		seleccionar álbum imagen
+		ORDENAR EN EDITAR IMAGEN POR FECHA DE INDEXACIÓN <-------------
 	*/
 
 /* =========================================================
@@ -316,17 +319,35 @@ class Admin extends CI_Controller {
 
 	}
 
+	public function albumImagenes($idAlbum) {
+
+		$sidebar['selected'] 	= "albumes";
+		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
+		$header['breadcrumb']	= "<a href='".base_url()."admin/albumes'>Álbumes</a> <span class='separador'>&rsaquo;</span> Ordenar álbum";
+
+		$header['titular'] 			= "Ordenar imágenes álbum";
+		$data['todoImagenesAlbums']	= $this->modImagenes->getImagenesAlbums($idAlbum);
+
+		$footer['tiempo'] 		= $this->benchmark->elapsed_time();
+		$footer['memoria'] 		= $this->benchmark->memory_usage();
+		
+		$this->load->view('backend/common/header', $header);
+		$this->load->view('backend/albums', $data);
+		$this->load->view('backend/common/footer', $footer);
+
+	}
+
 /* =========================================================
 	Imágenes
 ============================================================ */
 
 	public function imagenes() {
 
-		$sidebar['selected'] 	= "imagenes";
+		$sidebar['selected'] 	= "editarImagenes";
 		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
 		$header['breadcrumb']	= "<a href='".base_url()."admin/imagenes'>Imágenes</a>";
 
-		$header['titular'] 		= "Imágenes";
+		$data['titular'] 		= "Imágenes";
 		$data['todoImagenes']	= $this->modImagenes->getImagenes();
 
 		$footer['tiempo'] 		= $this->benchmark->elapsed_time();
@@ -338,23 +359,37 @@ class Admin extends CI_Controller {
 		
 	}
 
+	/* Prepara la vista addImagen.php */
 
 	public function addImagen( $idImagen ='add' ) {
 
-		$sidebar['selected'] 	= "imagenes";
+		if ( $idImagen == 'add') {
+			$sidebar['selected'] 	= "subirImagen";
+		} else {
+			$sidebar['selected'] 	= "editarImagen";
+		} 
 		$header['sidebar'] 		= $this->load->view('backend/common/sidebar',$sidebar, true);
 
-		if ( $idImagen == 'add') {
-			$header['titular'] 			 = "Subir imágenes";			
+		if ( $idImagen == 'add') {						
 			$header['breadcrumb']		 = "<a href='".base_url()."admin/imagenes'>Imágenes</a> <span class='separador'>&rsaquo;</span> Subir una imagen";
+			$data['titular'] 			 = "Subir imágenes";
 			$data['accion'] 			 = "add";
-		} else {
-			$header['titular'] 			 = "Editar una imagen";
+		} else {			
 			$header['breadcrumb']		 = "<a href='".base_url()."admin/imagenes'>Imágenes</a> <span class='separador'>&rsaquo;</span> Editar una imagen";
+			$data['titular'] 			 = "Editar una imagen";
 			$data['accion'] 			 = "edit";
 			$data['todoImagen'] 		 = $this->modImagenes->getImagen($idImagen);			
 			$data['todoImagen']['fecha'] = $this->libImagenes->dateUkToSp($data['todoImagen']['fecha']);			
 			$data['todoTagsImagen'] 	 = $this->modImagenes->getTagsToImagen($idImagen);
+
+			/* Guardamos nada más que los ids para el select de álbumes */			
+			$todoAlbumsImagen 	 		= $this->modImagenes->getAlbumsToImagen($idImagen);
+			$arrayIdsAlbums = array();
+			foreach ( $todoAlbumsImagen as $clave ) {
+				$arrayIdsAlbums[] = $clave['id_album'];
+			}
+
+			$data['todoAlbumsImagen'] = $arrayIdsAlbums;
 		}
 
 		$data['todoAlbums']		= $this->modImagenes->getAlbums();
@@ -367,6 +402,8 @@ class Admin extends CI_Controller {
 		$this->load->view('backend/common/footer', $footer);
 	}
 
+	/* Añade una imagen */
+
 	public function insertImagen() {
 
 		if (isset($_POST) && $_POST) {
@@ -375,8 +412,7 @@ class Admin extends CI_Controller {
 			$imagenFecha 		= $this->input->post('imagenFecha');	
 			$imagenLugar 		= $this->input->post('imagenLugar');			
 			$imagenDescripcion 	= $this->input->post('imagenDescripcion');
-			$imagenAlbum 		= $this->input->post('imagenAlbum'); 
-						
+			$imagenAlbum 		= $this->input->post('imagenAlbum'); 						
 			$imagenTags 		= $this->input->post('imagenTags');
 			$listadoTags 		= $this->input->post('inputTags');
 
@@ -394,7 +430,18 @@ class Admin extends CI_Controller {
 
 			$imagenRuta = "pendiente";
 
-			$idImagen = $this->modImagenes->insertImagen($imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta, $imagenAlbum);
+			$idImagen = $this->modImagenes->insertImagen($imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta);
+
+			if ( $imagenAlbum && $imagenAlbum != 0 ) {
+				foreach ( $imagenAlbum as $clave=>$valor ) {
+					$orden = $this->modImagenes->getLastOrdenImagen($valor);
+					if ( $orden && $orden != 0 ) {
+						$this->modImagenes->insertImagenOnAlbum($valor, $idImagen, $orden+1);
+					} else {
+						$this->modImagenes->insertImagenOnAlbum($valor, $idImagen, 1);
+					}
+				}				
+			}
 
 			if ( $imagenTags AND $imagenTags !=0 ) {
 				$imagenTags = explode(",", $imagenTags );
@@ -427,7 +474,7 @@ class Admin extends CI_Controller {
 
 					$imagenRuta = $year.'/'.$month.'/'.$nombreImagen.".".$extensionImagen;					
 
-					$this->modImagenes->updateImagen($idImagen, $imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta, $imagenAlbum);
+					$this->modImagenes->updateImagen($idImagen, $imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta);
 
 				} 
 
@@ -438,6 +485,8 @@ class Admin extends CI_Controller {
 		} // #if (isset($_POST) && $_POST)
 
 	} //#insertImagen
+
+	/* Updatea una imagen */
 
 	public function updateImagen() {
 
@@ -450,7 +499,6 @@ class Admin extends CI_Controller {
 			$imagenAlbum 		= $this->input->post('imagenAlbum');
 			$imagenRuta 		= $this->input->post('imagenRuta');
 			$idImagen 			= $this->input->post('idImagen');    
-						
 			$imagenTags 		= $this->input->post('imagenTags');
 			$listadoTags 		= $this->input->post('inputTags');
 
@@ -466,6 +514,8 @@ class Admin extends CI_Controller {
 				$imagenLugar = "-";
 			}
 
+			/* tags */
+
 			$this->modImagenes->deleteTagToImagen($idImagen);
 
 			if ( $imagenTags AND $imagenTags !=0 ) {
@@ -473,9 +523,24 @@ class Admin extends CI_Controller {
 				$this->libImagenes->insertTagsImagen($idImagen, $imagenTags);
 			}			
 			$this->libImagenes->insertTagsImagen($idImagen, $listadoTags);
+			
+			/* álbumes */
+
+			$this->modImagenes->deleteAlbumToImagen($idImagen);
+
+			if ( $imagenAlbum && $imagenAlbum != 0 ) {
+				foreach ( $imagenAlbum as $clave=>$valor ) {
+					$orden = $this->modImagenes->getLastOrdenImagen($valor);
+					if ( $orden && $orden != 0 ) {
+						$this->modImagenes->insertImagenOnAlbum($valor, $idImagen, $orden+1);
+					} else {
+						$this->modImagenes->insertImagenOnAlbum($valor, $idImagen, 1);
+					}
+				}				
+			}
 
 
-			$this->modImagenes->updateImagen($idImagen, $imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta, $imagenAlbum);
+			$this->modImagenes->updateImagen($idImagen, $imagenNombre, $imagenFecha, $imagenLugar, $imagenDescripcion, $imagenRuta);
 
 		
 			redirect ( 'admin/addImagen/'.$idImagen, 'location', 301 );	

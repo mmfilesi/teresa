@@ -7,11 +7,22 @@
 
         <h5>Imágenes</h5>
             <ul>
-                <li><a href="<?= base_url(); ?>admin/addImagen">Subir</a></li>
-                <li><a href="<?= base_url(); ?>admin/imagenes">Editar</a></li>
+                <li>
+                    <?php if ( $selected != 'subirImagen') { ?>
+                        <a href="<?= base_url(); ?>admin/addImagen">Subir</a>
+                    <?php } else { ?>
+                        <span class="enlacesSeleccionados">Subir</span>
+                    <?php } ?>
+                </li>
+                <li>
+                    <?php if ( $selected != 'editarImagen' && $selected != 'editarImagenes') { ?>
+                        <a href="<?= base_url(); ?>admin/imagenes">Editar</a></li>
+                    <?php } else { ?>
+                         <span class="enlacesSeleccionados">Editar</span>
+                    <?php } ?>
             </ul>
 
-        <h5>Albums</h5>
+        <h5>Álbumes</h5>
             <ul>
                 <li><a href="<?= base_url(); ?>admin/addAlbum">Crear</a></li>
                 <li><a href="<?= base_url(); ?>admin/albumes">Editar</a></li>
@@ -26,6 +37,7 @@
         <h5>Admin</h5>
             <ul>
                 <li><a href="<?= base_url(); ?>admin/ajustes">Ajustes</a></li>
+                <li><a href="<?= base_url(); ?>admin/menu">Menú</a></li>
                 <li>Usuarios</li>
             </ul>
 </nav>

@@ -159,19 +159,19 @@ body {
 
 #sidebar li {
     border-top: 1px #fff;    
-    padding: 0.3em;
-    cursor: pointer;
+    padding: 0.3em;    
     padding-left: 1em;
     border-collapse: collapse;
 }
 
 
-#sidebar li a {
+#sidebar li a, #breadCrumb a {
     text-decoration: none;
     color: #0777eb;
+    cursor: pointer;
 }
 
-#sidebar li a:hover {
+#sidebar li a:hover, , #breadCrumb a:hover {
     text-decoration: none;
     color: #ff9900;
 }
@@ -403,6 +403,13 @@ body {
         0px 1px 0px rgba(255,255,255,0.3);
     text-align: center;
     cursor:pointer;
+}
+
+.enlacesSeleccionados {
+    /* color: #ff9900; */
+     color: #666;
+     font-weight: bold;
+
 }
 
 /* ==========================================================================

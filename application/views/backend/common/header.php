@@ -19,7 +19,7 @@
 
         <script src="<?= base_url(); ?>js/vendor/jquery.min.js"></script>
         <script src="<?= base_url(); ?>js/vendor/jquery-ui.min.js"></script>
-         <script src="<?= base_url(); ?>js/vendor/underscore-min.js"></script>
+        <script src="<?= base_url(); ?>js/vendor/underscore-min.js"></script>
         <script src="<?= base_url(); ?>js/vendor/tinymce/tinymce.min.js"></script>
 
         
@@ -40,8 +40,3 @@
                 <article id="developArea" class="inlineBlock">
                     
                     <nav id="breadCrumb" class="bordeGrisBottom fuente08 padding-02"><?= $breadcrumb; ?></nav>
-                    
-                    <h3 class="azul_0777eb"><?= $titular; ?></h3>
-            
-
-

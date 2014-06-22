@@ -6,6 +6,14 @@
 
 	<?php $action = ( $accion != "edit" ) ? base_url().'admin/insertImagen' : base_url().'admin/updateImagen'; ?>
 
+	<?php if ( $accion == "edit" ) { ?>
+		<div class="floatRight" id="js-borrrarImagen" style="margin-top: 20px;">
+			<img src="<?= base_url(); ?>css/iconos/ico-borrar.png" widht="20" height="20" alt="borrar imagen" title="borrar imagen" class="cursorPointer" id="js-borrarImagen" />		
+		</div>
+	<?php } ?>
+
+	<h3 class="azul_0777eb"><?= $titular; ?></h3>
+
 	<form id="formularioImagen" action="<?= $action; ?>" method="post"  enctype="multipart/form-data" class="fuente08">
 
 		<div id="primerEstrato" class="bordeGrisBottom marginBottom-01">
@@ -18,32 +26,26 @@
 				<?php if ( $accion == "edit" ) { ?>
 					value="<?= $todoImagen['nombre']; ?>"
 				<?php } ?>
-				/></p>
+				tabindex="1" /></p>
 
 				<p><label for="imagenFecha"><span class="negrita">Fecha</span></label> <br />	
 				<input type="text" name="imagenFecha" id="imagenFecha" class="inputText" 
 				<?php if ( $accion == "edit" ) { ?>
 					value="<?= $todoImagen['fecha']; ?>"
 				<?php } ?>
-				/></p>
+				tabindex="2" /></p>
 
 				<p><label for="imagenLugar"><span class="negrita">Lugar</span></label> <br />	
 				<input type="text" name="imagenLugar" id="imagenLugar" class="inputText" 
 				<?php if ( $accion == "edit" ) { ?>
 					value="<?= $todoImagen['lugar']; ?>"
 				<?php } ?>
-				/></p>
+				tabindex="3" /></p>
 
 			</div><!-- #datos básicos -->
 
 			<!-- imagen -->
 			<div class="inlineBlock ancho50c verticalTop" style="margin-bottom:2em;">
-				<?php if ( $accion == "edit" ) { ?>
-					<div class="floatRight" id="js-borrrarImagen">
-						<img src="<?= base_url(); ?>css/iconos/ico-borrar.png" widht="20" height="20" alt="borrar imagen" title="borrar imagen" class="cursorPointer" id="js-borrarImagen" /><br />
-						<img src="<?= base_url(); ?>css/iconos/ico-editar.png" widht="20" height="20" alt="editar imagen" title="editar imagen" class="cursorPointer" id="js-editarImagen" style="margin-top:10px;" />
-					</div>
-				<?php } ?>	
 
 				<p><span class="negrita">Imagen</span></p>
 					<?php if ( ( $accion == "edit" ) AND ( $todoImagen['ruta'] != "pendiente" ) AND ( $todoImagen['ruta'] != "" ) ) { ?>
@@ -65,13 +67,13 @@
 			<div class="inlineBlock ancho50c verticalTop"  style="margin-bottom:2em;">
 
 					<label for="imagenAlbum"><span class="negrita">Álbum</span></label>	<br />
-					<select name="imagenAlbum" id="imagenAlbum" class="inputText">
+					<select name="imagenAlbum[]" id="imagenAlbum" class="inputText" multiple tabindex="4">
 						<option value="0">ninguno</option>
 
 						<?php if ( $todoAlbums && count($todoAlbums) > 0 ) {
 							foreach ( $todoAlbums as $clave ) { ?>
 								<option value="<?= $clave['id']; ?>"
-									<?php if ( $accion == "edit" && $todoImagen['id_album'] == $clave['id'] ) { ?>
+									<?php if ( $accion == "edit" && in_array($clave['id'], $todoAlbumsImagen) ) { ?>
 										selected
 									<?php } ?>
 								><?= $clave['nombre']; ?></option>
@@ -86,10 +88,10 @@
 
 				<label for="imagenTags"><span class="negrita">Etiquetas</span> </label>	<br />
 
-				<input type="text" name="imagenTags" id="imagenTags" class="inputText" placeholder="separadas por comas"/>
+				<input type="text" name="imagenTags" id="imagenTags" class="inputText" placeholder="separadas por comas" tabindex="5" />
 				<span id="js-addTag" class="botonRedondo">+</span>
 
-				<div id="contenedorTags">
+				<div id="contenedorTags" style="margin-top:5px;">
 					<?php if ( $accion == "edit" AND count($todoTagsImagen) > 0 ) { ?>
 						<?php $contador = 0; ?>
 						<?php foreach ( $todoTagsImagen as $clave ) { ?>
@@ -105,7 +107,7 @@
 		<div id="tercerEstrato" class="bordeGrisBottom marginBottom-01">
 
 			<p><span class="negrita">Descripción</span><br />
-			<textarea name="imagenDescripcion" id="imagenDescripcion" class="ancho250 azul_0777eb"><?php if ( $accion == "edit") { echo $todoImagen['descripcion']; } ?></textarea></p>
+			<textarea name="imagenDescripcion" id="imagenDescripcion" class="ancho250 azul_0777eb" tabindex="6"><?php if ( $accion == "edit") { echo $todoImagen['descripcion']; } ?></textarea></p>
 
 		</div>
 
@@ -152,144 +154,180 @@
 
 	$(document).ready(function() {
 
-		$(function() {
-		    $( "#imagenFecha" ).datepicker({
-		      defaultDate: "+1w",
-		      changeMonth: true,
-		      numberOfMonths: 3,
-		      onClose: function( selectedDate ) {
-		        $( "#fecha" ).datepicker( "option", "minDate", selectedDate );
-		      }
-		    });
-	  	});
+		var utilidadesFormulario = function() {
 
-		$(function($){
-			$.datepicker.regional['es'] = {
-				closeText: 'Cerrar',
-				prevText: '<Ant',
-				nextText: 'Sig>',
-				currentText: 'Hoy',
-				monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-				monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-				dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-				dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-				dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-				weekHeader: 'Sm',
-				dateFormat: 'dd-mm-yy',
-				firstDay: 1,
-				isRTL: false,
-				showMonthAfterYear: false,
-				yearSuffix: ''
-			};
-			$.datepicker.setDefaults($.datepicker.regional['es']);
-		});
-		
-		// Tiny
-		tinyMCE.init({
-			mode : "textareas",
-			language : 'es',
-			browser_spellcheck : true,
-			plugins: [
-         				"advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker",
-        				"searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking",
-        				"save table contextmenu directionality paste textcolor"
-					],
-			toolbar: "forecolor backcolor | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent"
-		}); 
+			this.init = function() {
+				utilidadesFormulario.datePicker();
+				utilidadesFormulario.tinyMCE();
+				utilidadesFormulario.tags();
+			},
 
+			/* Datepicker */
+			this.datePicker = function() {
 
-		// Interactivismos formulario
+				$(function() {
+				    $( "#imagenFecha" ).datepicker({
+				      defaultDate: "+1w",
+				      changeMonth: true,
+				      numberOfMonths: 3,
+				      onClose: function( selectedDate ) {
+				        $( "#fecha" ).datepicker( "option", "minDate", selectedDate );
+				      }
+				    });
+			  	});
 
-		$("#js-addTag").click(function(event) {
-
-			event.preventDefault();
-
-			var cadena = "";
-			var cadena2 = "";
-			var arrayTags = $("#imagenTags").val();
-			var tagsYaListados = $(".listadoTags").length;
-			var contador;
-
-			if ( arrayTags != "" ) {
-
-			arrayTags = arrayTags.split(",");
-
-			for ( var i=0; i < arrayTags.length; i++ ) {
-					contador = i+tagsYaListados;
-					cadena += "<span id='js-tag-"+contador+"' class='listadoTags'>&otimes; "+arrayTags[i]+"</span>";
-					cadena2 = "<input type='hidden' id='input-tag-"+contador+"' name='inputTags["+contador+"]' value='"+arrayTags[i]+"' />";
-					$("#js-guardar").before(cadena2);
-				}
-
-				$("#contenedorTags").prepend(cadena);
-				$("#albumTags").val("");
-
-			}
-
-		});
-
-		$("#contenedorTags").on("click",".listadoTags", function() {
-			var id = $(this).attr('id');
-			id = id.replace("js-tag-", "");
-			id = "#input-tag-"+id;
-			$(id).remove();
-			$(this).remove();
-		});
-
-		$("#js-guardar").click(function(event) {
-			event.preventDefault();
-			var check = 0;
-			var temporal;
-			var cadena = "<div class='roja_dd0909 negrita'>El texto es demasiado largo</div>";
-			var imagenCheck = $('#imagenRuta').val();
-			
-			var inputsCheck = ['#imagenNombre','#imagenLugar'];
-
-			for ( var i=0; i< inputsCheck.length; i++ ) {
-				temporal = $(inputsCheck[i]).val();
-				if ( temporal.length > 250 ) {
-					$(inputsCheck[i]).after(cadena);
-					check = 1;
-				}
-			}
-
-			cadena = "<div class='roja_dd0909 negrita' id='js-sinImagen'>Falta subir la imagen</div>";
-
-			if ( imagenCheck == "" || imagenCheck === undefined ) {
-				$('#imagenRuta').after(cadena);
-				check = 1;
-				$('#imagenRuta').click(function() {
-					$('#js-sinImagen').remove();
+				$(function($){
+					$.datepicker.regional['es'] = {
+						closeText: 'Cerrar',
+						prevText: '<Ant',
+						nextText: 'Sig>',
+						currentText: 'Hoy',
+						monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+						monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+						dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+						dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+						dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+						weekHeader: 'Sm',
+						dateFormat: 'dd-mm-yy',
+						firstDay: 1,
+						isRTL: false,
+						showMonthAfterYear: false,
+						yearSuffix: ''
+					};
+					$.datepicker.setDefaults($.datepicker.regional['es']);
 				});
-			}
 
-			if ( check == 0 ) {
-				$("#formularioImagen").submit();
-			}
+			}, /* #Datepicker */
 
-		});
+			/* Editor */
+			this.tinyMCE = function() {
+				tinyMCE.init({
+					mode : "textareas",
+					language : 'es',
+					browser_spellcheck : true,
+					plugins: [
+		         				"advlist autolink link lists charmap print preview hr anchor pagebreak spellchecker",
+		        				"searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime nonbreaking",
+		        				"save table contextmenu directionality paste textcolor"
+							],
+					toolbar: "forecolor backcolor | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent"
+				});
+			}, /* #Editor */
 
-		<?php if ( $accion == "edit" ) { ?>
+			this.tags = function() {
 
-		$("#js-borrarImagen").click(function() {
+				$("#js-addTag").click(function(event) {
 
-			$( "#dialog-borrar" ).dialog({
-			    resizable: false,
-			    height:160,
-			    modal: true
-		    });
+					event.preventDefault();
 
-		    $('#js-cancelarDialog').click(function() {
-		    	$( "#dialog-borrar" ).dialog( "close" );
-		    });
+					var cadena = "";
+					var cadena2 = "";
+					var arrayTags = $("#imagenTags").val();
+					var tagsYaListados = $(".listadoTags").length;
+					var contador;
 
-		    $('#js-borrarDialog').click(function() {
-		    	$( "#dialogBorrarFormulario" ).submit();
-		    });  			
+					if ( arrayTags != "" ) {
 
-		});
+					arrayTags = arrayTags.split(",");
 
-		<?php } ?>
+					for ( var i=0; i < arrayTags.length; i++ ) {
+							contador = i+tagsYaListados;
+							cadena += "<span id='js-tag-"+contador+"' class='listadoTags'>&otimes; "+arrayTags[i]+"</span>";
+							cadena2 = "<input type='hidden' id='input-tag-"+contador+"' name='inputTags["+contador+"]' value='"+arrayTags[i]+"' />";
+							$("#js-guardar").before(cadena2);
+						}
+
+						$("#contenedorTags").prepend(cadena);
+						$("#imagenTags").val("");
+
+					}
+
+				});
+
+				$("#contenedorTags").on("click",".listadoTags", function() {
+					var id = $(this).attr('id');
+					id = id.replace("js-tag-", "");
+					id = "#input-tag-"+id;
+					$(id).remove();
+					$(this).remove();
+				});
+			} /* #Tags */
+
+		} /* #utilidadesFormulario */
+
+		var envioFormulario = function() {
+
+			this.init = function() {
+				envioFormulario.controlDatos();
+				<?php if ( $accion == "edit" ) { ?>
+					envioFormulario.borrarImagen();
+				<?php } ?>
+			},
+
+			this.controlDatos = function() {
+
+				$("#js-guardar").click(function(event) {
+					event.preventDefault();
+					var check = 0;
+					var temporal;
+					var cadena = "<div class='roja_dd0909 negrita'>El texto es demasiado largo</div>";
+					var imagenCheck = $('#imagenRuta').val();
+					
+					var inputsCheck = ['#imagenNombre','#imagenLugar'];
+
+					for ( var i=0; i< inputsCheck.length; i++ ) {
+						temporal = $(inputsCheck[i]).val();
+						if ( temporal.length > 250 ) {
+							$(inputsCheck[i]).after(cadena);
+							check = 1;
+						}
+					}
+
+					cadena = "<div class='roja_dd0909 negrita' id='js-sinImagen'>Falta subir la imagen</div>";
+
+					if ( imagenCheck == "" || imagenCheck === undefined ) {
+						$('#imagenRuta').after(cadena);
+						check = 1;
+						$('#imagenRuta').click(function() {
+							$('#js-sinImagen').remove();
+						});
+					}
+
+					if ( check == 0 ) {
+						$("#formularioImagen").submit();
+					}
+
+				});
+
+			}, /* #controlDatos */
+
+			this.borrarImagen = function() {			
+
+				$("#js-borrarImagen").click(function() {
+					$( "#dialog-borrar" ).dialog({
+					    resizable: false,
+					    height:160,
+					    modal: true
+				    });
+
+				    $('#js-cancelarDialog').click(function() {
+				    	$( "#dialog-borrar" ).dialog( "close" );
+				    });
+
+				    $('#js-borrarDialog').click(function() {
+				    	$( "#dialogBorrarFormulario" ).submit();
+				    });  			
+
+				});			
+
+			}  /* #borrarImagen */
+
+		} /* #envioFormulario */
+
+		var utilidadesFormulario = new utilidadesFormulario();
+		utilidadesFormulario.init();
+		var envioFormulario = new envioFormulario();
+		envioFormulario.init();
 
 
 	});
